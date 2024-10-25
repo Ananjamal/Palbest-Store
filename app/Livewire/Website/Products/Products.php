@@ -87,7 +87,7 @@ class Products extends Component
             // Success alert
             $this->dispatch('swal:alert', [
                 'title' => 'Success!',
-                'text' => 'Item added to your favorites successfully.',
+                'text' => 'Item added to your favorites successfully..',
                 'icon' => 'success',
             ]);
 

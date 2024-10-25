@@ -95,7 +95,7 @@ class Productdetails extends Component
             return; // Stop further execution if user is not logged in
         }
 
-        // Check if the item already exists in the favorites
+        // Check if the item already exists in the favoritesssssss
         $existingItem = Favorite::where('user_id', $this->user_id)
             ->where('product_id', $this->product->id)
             ->first();

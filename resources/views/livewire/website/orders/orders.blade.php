@@ -100,12 +100,29 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div>
-                    {{-- @if ($order_id)
+                    @if ($order_id)
                         @livewire('website.orders.order-details', [$order_id])
-                    @endif --}}
+                    @endif
                 </div>
             </div>
         </div>
     </div>
     <!-- Order Details Modal End -->
+    <div wire:ignore.self class="modal fade" id="orderDetails" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Confirm Cancel</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div>
+                @if ($order_id)
+                    @livewire('website.orders.cancel-order', [$order_id])
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Order Details Modal End -->
 </div>

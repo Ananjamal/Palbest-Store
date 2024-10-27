@@ -62,9 +62,11 @@
 
                                             <!-- Button to remove from wishlist -->
                                             <button class="px-3 btn btn-sm btn-outline-danger"
-                                                wire:click="removeFromWishlist({{ $item->id }})">
+                                                wire:click.prevent="removeFromWishlist({{ $item->id }})"
+                                                wire:loading.attr="disabled" wire:target="removeFromWishlist">
                                                 <i class="fa fa-trash"></i> Remove
                                             </button>
+
                                         </td>
 
                                     </tr>

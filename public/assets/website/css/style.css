@@ -409,108 +409,169 @@ ol {
 /*---------------------
   Header
 -----------------------*/
-
 /* General Header Styling */
 .header {
-    background: #fff;
-    padding: 20px 0; /* Moderate padding for the header */
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05); /* Subtle shadow for a clean look */
+    background-color: #ffffff;
+    padding: 25px 0; /* Increased top and bottom padding */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+}
+
+.header__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .header__logo img {
-    max-width: 150px; /* Slightly larger logo */
+    max-width: 150px; /* Increased logo size */
 }
 
+/* Navigation Menu */
 .header__menu ul {
+    display: flex;
     list-style: none;
-    padding-left: 5p;
-    margin-bottom: 0;
-}
-
-.header__menu ul li {
-    display: inline-block;
-    margin-right: 30px; /* Moderate spacing between menu items */
+    gap: 40px; /* Increased gap between menu items */
+    padding: 0;
+    margin: 0;
 }
 
 .header__menu ul li a {
-    color: #111;
-    font-size: 16px; /* Slightly increased font size */
-    text-transform: uppercase;
-    font-weight: 600; /* Bolder font but not too heavy */
-    padding: 8px 5px; /* Slightly larger clickable area */
+    color: #333;
+    font-size: 18px; /* Increased font size */
+    font-weight: 600; /* Slightly bolder font */
+    text-decoration: none;
+    padding: 8px 0; /* Increased vertical padding */
     position: relative;
+    transition: color 0.3s, transform 0.3s;
 }
 
-.header__menu ul li a:hover,
-.header__menu ul li.active a {
-    color: #e53637;
+.header__menu ul li a:hover {
+    color: #f44336; /* Changed hover color to orange */
+    transform: translateY(-3px); /* Increased hover effect */
 }
 
-.header__menu ul li a:after {
-    content: '';
-    display: block;
+.header__menu ul li a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px; /* Adjusted position */
+    left: 0;
     width: 0;
-    height: 2px;
-    background: #e53637;
-    transition: width 0.4s;
+    height: 3px; /* Increased underline height */
+    background-color: #f44336; /* Changed underline color to orange */
+    transition: width 0.3s;
 }
 
-.header__menu ul li a:hover:after,
-.header__menu ul li.active a:after {
+.header__menu ul li a:hover::after {
     width: 100%;
 }
 
-/* Icon Links */
-.header__nav__option {
-    display: inline-flex;
+/* Action Icons */
+.header__actions {
+    display: flex;
     align-items: center;
+    gap: 20px; /* Increased gap between icons */
 }
 
 .icon-link {
-    font-size: 22px; /* Larger icon size but not too big */
-    color: #111;
-    margin-right: 20px; /* Slightly increased spacing between icons */
+    font-size: 24px; /* Increased icon size */
+    color: #333;
     position: relative;
     transition: color 0.3s;
-
+    text-decoration: none;
 }
 
 .icon-link:hover {
-    color: #e53637;
+    color: #f44336; /* Changed icon hover color to orange */
 }
 
-.cart-icon {
-    position: relative;
-}
-
-.cart-count {
-    background-color: #e53637;
-    color: #fff;
-    font-size: 10px; /* Slightly larger cart count text */
-    border-radius: 50%;
-    padding: 3px 7px; /* Moderate padding for cart count */
+/* Badge Styling for Notification Counts */
+/* Badge Styling for Notification Counts */
+.icon-link .badge {
+    background-color: #f44336; /* New background color for contrast */
+    color: #fff; /* Badge text color */
+    font-size: 10px; /* Font size */
+    font-weight: bold; /* Keep it bold for emphasis */
+    border-radius: 10px; /* Rounded corners */
+    padding: 4px 6px; /* Padding */
     position: absolute;
-    top: -9px;
-    right: -10px;
+    top: -5px; /* Adjusted position for better alignment */
+    right: -10px; /* Adjusted position */
+    line-height: 1; /* Ensure the line height is not affecting size */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: transform 0.2s; /* Animation effect */
 }
+
+.icon-link .badge:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
 
 /* Buttons */
+.btn-primary, .btn-secondary {
+    font-size: 16px; /* Increased button font size */
+    padding: 10px 15px; /* Increased padding */
+    border-radius: 4px;
+    font-weight: 600; /* Slightly bolder font */
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s; /* Added transition for transform */
+    display: inline-block; /* Ensure it behaves like a block */
+    text-align: center; /* Center align text */
+}
+
+/* Primary Button */
 .btn-primary {
-    background-color: #fa0000;
-    border: none;
-    padding: 8px 15px; /* Slightly bigger button padding */
-    color: #fff;
-    font-size: 16px; /* Moderate font size */
-    border-radius: 6px; /* Slight rounding for the buttons */
-    margin-left: 10px;
-    transition: background-color 0.3s;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    background-color: #f44336 !important; /* Primary background color */
+    color: #fff; /* Text color */
+    border: 1px solid transparent !important; /* Default border */
 }
 
 .btn-primary:hover {
-    background-color: #f05656;
+    background-color: #d32f2f !important; /* Darker shade on hover */
+    border-color: #d32f2f !important; /* Match border color */
 }
+
+/* Secondary Button */
+.btn-secondary {
+    background-color: #6c757d; /* Updated secondary background color */
+    color: #fff; /* Text color */
+    border: 1px solid transparent; /* Default border */
+}
+
+.btn-secondary:hover {
+    background-color: #495057 !important; /* Darker shade on hover */
+    border-color: #495057 !important; /* Match border color */
+}
+
+
+/* Mobile Menu Icon */
+.canvas__open {
+    font-size: 28px; /* Increased icon size */
+    color: #333;
+    cursor: pointer;
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .header__content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header__menu ul {
+        flex-direction: column;
+        gap: 15px; /* Adjusted gap for mobile */
+    }
+
+    .canvas__open {
+        display: block;
+    }
+
+    .header__menu {
+        display: none;
+    }
+}
+
 
 /* Mobile Menu */
 .canvas__open i {
@@ -969,7 +1030,12 @@ ol {
 	opacity: 1;
 	visibility: visible;
 }
-
+.product__item:hover .product__item__text button
+ {
+	top: 22px;
+	opacity: 1;
+	visibility: visible;
+}
 .product__item:hover .product__item__text h6 {
 	opacity: 0;
 }
@@ -1054,13 +1120,17 @@ ol {
 	padding: 10px;
 	display: inline-block;
 }
-
+.product__item__pic .product__hover li i {
+	background: #ffffff;
+	padding: 10px;
+	display: inline-block;
+}
 .product__item__text {
 	padding-top: 25px;
 	position: relative;
 }
 
-.product__item__text a {
+/* .product__item__text a {
 	font-size: 15px;
 	color: #e53637;
 	font-weight: 700;
@@ -1072,7 +1142,36 @@ ol {
 	-webkit-transition: all, 0.3s;
 	-o-transition: all, 0.3s;
 	transition: all, 0.3s;
-}
+} */
+.product__item__text button {
+    font-size: 15px;
+    color: #fff;
+    background-color: #e53637;
+    font-weight: 700;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    position: absolute;
+    left: 130px;
+    top: 10px;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  }
+
+  .product__item__text:hover button {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-5px);
+  }
+
+  .product__item__text button:hover {
+    background-color: #d12d2f;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    color: #fff;
+  }
+
 
 .product__item__text h6 {
 	color: #111111;

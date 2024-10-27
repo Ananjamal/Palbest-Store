@@ -34,6 +34,7 @@ Route::get('cart', App\Livewire\Website\Cart\Carts::class)->name('cart')->middle
 Route::get('checkout', App\Livewire\Website\Checkout\Checkout::class)->name('checkout')->middleware('auth');
 Route::get('product/{id}/details', App\Livewire\Website\Shop\Productdetails::class)->name('productDetails');
 Route::get('favorites', App\Livewire\Website\Favorite\Favorites::class)->name('favorites')->middleware('auth');
+Route::get('orders', App\Livewire\Website\Orders\Orders::class)->name('orders')->middleware('auth');
 
 
 

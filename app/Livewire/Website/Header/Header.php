@@ -26,7 +26,8 @@ class Header extends Component
     {
         $this->user_id = Auth::id();
         $this->cart = Cart::where('user_id', $this->user_id)->first();
-        $this->favorites = Favorite::where('user_id', $this->user_id)->first();
+        $this->favorites = Favorite::where('user_id', $this->user_id)->get();
+        $this->favoriteCount = $this->favorites->count();
 
         if ($this->cart) {
             $this->cartItems = CartItem::where('cart_id', $this->cart->id)->get();
@@ -34,9 +35,6 @@ class Header extends Component
         } else {
             $this->cartCount = 0;
         }
-
-        // If counting favorite items
-        $this->favoriteCount = Favorite::where('user_id', $this->user_id)->count();
     }
 
     public function render()

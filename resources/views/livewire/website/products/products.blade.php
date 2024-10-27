@@ -34,11 +34,15 @@
                                                 <img src="{{ asset('assets/website/img/icon/search.png') }}"
                                                     alt="Search"></a>
                                         </li>
+                                        {{-- <li wire:click='addToCart({{ $item->id }})'>
+                                            <i class="fa-solid fa-cart-plus" style="color: #000000"></i>
+                                        </li> --}}
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <h6>{{ $item->name }}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <button wire:click='addToCart({{ $item->id }})' class="add-cart">+ Add To
+                                        Cart</button>
                                     <div class="rating">
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if ($i <= $item->stars)
@@ -50,7 +54,7 @@
                                         @endfor
                                     </div>
                                     <h5>${{ $item->price }}</h5>
-                                    <div class="product__color__select">
+                                    {{-- <div class="product__color__select">
                                         <label for="pc-1">
                                             <input type="radio" id="pc-1">
                                         </label>
@@ -60,7 +64,7 @@
                                         <label class="grey" for="pc-3">
                                             <input type="radio" id="pc-3">
                                         </label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
@@ -86,11 +90,16 @@
                                                 <img src="{{ asset('assets/website/img/icon/search.png') }}"
                                                     alt="Search"></a>
                                         </li>
+                                        {{-- <li wire:click='addToCart({{ $item->id }})'>
+                                            <i class="fa-solid fa-cart-plus" style="color: #000000"></i>
+                                        </li> --}}
+
                                     </ul>
                                 </div>
                                 <div class="product__item__text">
                                     <h6>{{ $item->name }}</h6>
-                                    <a href="#" class="add-cart">+ Add To Cart</a>
+                                    <button wire:click='addToCart({{ $item->id }})'>+ Add To Cart</button>
+
                                     <div class="rating">
                                         @for ($i = 1; $i <= 5; $i++)
                                             @if ($i <= $item->stars)
@@ -102,7 +111,7 @@
                                         @endfor
                                     </div>
                                     <h5>${{ $item->price }}</h5>
-                                    <div class="product__color__select">
+                                    {{-- <div class="product__color__select">
                                         <label for="pc-1">
                                             <input type="radio" id="pc-1">
                                         </label>
@@ -112,7 +121,8 @@
                                         <label class="grey" for="pc-3">
                                             <input type="radio" id="pc-3">
                                         </label>
-                                    </div>
+                                    </div> --}}
+
                                 </div>
                             </div>
                         </div>

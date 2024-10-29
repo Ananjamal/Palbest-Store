@@ -5,13 +5,13 @@ namespace App\Livewire\Website\Orders;
 use App\Models\Order;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class Orders extends Component
 {
     public $orders;
     public $user_id;
-
-    protected $listeners = ['cancelOrder' => 'handleCancelOrder'];
+    public $order_id;
 
     public function mount()
     {
@@ -19,24 +19,20 @@ class Orders extends Component
         $this->orders = Order::where('user_id', $this->user_id)->get();
     }
 
-    public function confirmCancelOrder($id)
+    public function cancelOrder($id)
     {
-        // Dispatch an event to trigger a confirmation
-        $this->dispatch('confirm-cancel', ['orderId' => $id]);
+        $this->order_id = $id;
     }
 
-    public function handleCancelOrder($id)
+    public function orderDetails($id)
     {
-        // Debugging to check if this method is triggered
-        dd('Function triggered with ID: ' . $id);
-
-        $order = Order::find($id);
-        if ($order) {
-            $order->status = 'cancelled';
-            $order->save();
-            // Update the orders collection to reflect the cancelled order
-            $this->orders = $this->orders->reject(fn($o) => $o->id === $id);
-        }
+        $this->order_id = $id;
+    }
+    #[On('refreshOrder')]
+    public function refresh()
+    {
+        $this->order_id = null;
+        $this->mount();
     }
 
     public function render()

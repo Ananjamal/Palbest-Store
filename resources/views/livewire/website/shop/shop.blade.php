@@ -168,40 +168,66 @@
                             </div>
                         </div>
                         <div class="row">
+                            @foreach ($products as $item)
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="img/product/product-2.jpg">
+                                    <div class="product__item__pic">
+                                        <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="img-fluid">
+                                        <span class="label">{{ $item->stock > 0 ? '' : 'out of stock' }}</span>
                                         <ul class="product__hover">
-                                            <li><a href="#"><img src="img/icon/heart.png" alt=""></a>
+                                            <li wire:click='addToFavorite({{ $item->id }})'>
+                                                @if ($item->isFavorited)
+                                                    <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
+                                                @else
+                                                    <img src="{{ asset('assets/website/img/icon/heart.png') }}" alt="Favorite">
+                                                @endif
+                                            </li>
+                                            <li><a href="{{ route('productDetails', $item->id) }}">
+                                                    <img src="{{ asset('assets/website/img/icon/search.png') }}" alt="Search"></a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6>Piqué Biker Jacket</h6>
-                                        <a href="#" class="add-cart">+ Add To Cart</a>
+                                        <h6>{{ $item->name }}</h6>
+                        
+                                        <!-- Display Sizes as Text -->
+                                        @if (!empty(json_decode($item->size, true)))
+                                            <div class="product__size__display">
+                                                <strong>Sizes:</strong>
+                                                <span>{{ implode(', ', json_decode($item->size)) }}</span>
+                                            </div>
+                                        @endif
+                        
+                                        <!-- Display Colors as Badges -->
+                                        @if (!empty(json_decode($item->color, true)))
+                                            <div class="product__color__display mb-2">
+                                                <strong>Colors:</strong>
+                                                @foreach (json_decode($item->color, true) as $color)
+                                                    <span class="color-circle" style="display:inline-block; width:15px; height:15px; background-color:{{ $color }}; border-radius:50%; margin-right:5px;"></span>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                        
+                                        <button wire:click='addToCart({{ $item->id }})' class="add-cart">+ Add To Cart</button>
                                         <div class="rating">
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
-                                            <i class="fa fa-star-o"></i>
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @if ($i <= $item->stars)
+                                                    <i class="fa fa-star" style="color: #ebd13f;"></i>
+                                                @else
+                                                    <i class="fa fa-star-o"></i>
+                                                @endif
+                                            @endfor
                                         </div>
-                                        <h5>$67.24</h5>
-                                        <div class="product__color__select">
-                                            <label for="pc-4">
-                                                <input type="radio" id="pc-4">
-                                            </label>
-                                            <label class="active black" for="pc-5">
-                                                <input type="radio" id="pc-5">
-                                            </label>
-                                            <label class="grey" for="pc-6">
-                                                <input type="radio" id="pc-6">
-                                            </label>
-                                        </div>
+                                        <h5>${{ $item->price }}</h5>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 col-sm-6">
+                        @endforeach
+                        
+
+
+
+                            {{-- <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item sale">
                                     <div class="product__item__pic set-bg" data-setbg="img/product/product-3.jpg">
                                         <span class="label">Sale</span>
@@ -576,7 +602,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
@@ -594,5 +620,5 @@
             </div>
         </section>
         <!-- Shop Section End -->
-        
+
     </div>

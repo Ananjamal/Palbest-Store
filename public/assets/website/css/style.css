@@ -541,6 +541,14 @@ ol {
     background-color: #495057 !important; /* Darker shade on hover */
     border-color: #495057 !important; /* Match border color */
 }
+.color-circle {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-right: 5px;
+    border: 1px solid #ccc;
+}
 
 
 /* Mobile Menu Icon */

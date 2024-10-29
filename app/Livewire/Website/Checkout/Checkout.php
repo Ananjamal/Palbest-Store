@@ -62,6 +62,7 @@ class Checkout extends Component
         $order = Order::create([
             'user_id' => $this->user_id,
             'total_amount' => $this->totalPrice,
+            'discount' => $this->discount,
             'payment_method' => $this->payment_method,
         ]);
         foreach ($this->cartItems as $cart) {
@@ -69,6 +70,8 @@ class Checkout extends Component
                 'order_id' => $order->id,
                 'product_id' => $cart->product->id,
                 'quantity' => $cart->quantity,
+                'size' => $cart->size,
+                'color' => $cart->color,
             ]);
         }
         $ShippingDetails = ShippingDetail::create([
@@ -90,7 +93,7 @@ class Checkout extends Component
             'icon' => 'success',
         ]);
         Cart::where('user_id', $this->user_id)->delete();
-        sleep(2);
+        sleep(5);
         return redirect()->route('/');
     }
     public function render()

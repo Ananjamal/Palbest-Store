@@ -52,7 +52,7 @@ editStockInstance.hide();
 const deleteItemModal = document.getElementById('deleteItem');
 const deleteItemInstance = bootstrap.Modal.getInstance(deleteItemModal);
 if (deleteItemInstance) {
-    deleteItemInstance.hide();
+deleteItemInstance.hide();
 }
 //////////////////////coupons //////////////////////
 // Close Edit Modal
@@ -75,6 +75,21 @@ const addcouponsInstance = bootstrap.Modal.getInstance(addcouponsModal);
 if (addcouponsInstance) {
 addcouponsInstance.hide();
 }
+//////////////////////orders //////////////////////
+  // Close Cancel Order Modal
+  const cancelOrderModal = document.getElementById('cancelOrder');
+  const cancelOrderInstance = bootstrap.Modal.getInstance(cancelOrderModal);
+  if (cancelOrderInstance) {
+      cancelOrderInstance.hide();
+  }
+
+  // Close Order Details Modal
+  const orderDetailsModal = document.getElementById('orderDetails');
+  const orderDetailsInstance = bootstrap.Modal.getInstance(orderDetailsModal);
+  if (orderDetailsInstance) {
+      orderDetailsInstance.hide();
+  }
+
 // Remove backdrop and class if necessary
 const modalBackdrop = document.querySelector('.modal-backdrop');
 if (modalBackdrop) {
@@ -85,5 +100,5 @@ document.body.classList.remove('modal-open');
 
 var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
 var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
-  return new bootstrap.Dropdown(dropdownToggleEl)
+return new bootstrap.Dropdown(dropdownToggleEl)
 })

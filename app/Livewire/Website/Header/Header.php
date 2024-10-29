@@ -3,6 +3,7 @@
 namespace App\Livewire\Website\Header;
 
 use App\Models\Cart;
+use App\Models\Order;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\Favorite;
@@ -20,6 +21,7 @@ class Header extends Component
     public $cartItemsCount;
     public $cartItemsTotal;
     public $cartItemsSubTotal;
+    public $ordersCount;
 
     #[On('refreshPage')]
     public function mount()
@@ -29,6 +31,8 @@ class Header extends Component
         $this->favorites = Favorite::where('user_id', $this->user_id)->get();
         $this->favoriteCount = $this->favorites->count();
 
+        $this->orders = Order::where('user_id', $this->user_id)->get();
+        $this->ordersCount = $this->orders->count();
         if ($this->cart) {
             $this->cartItems = CartItem::where('cart_id', $this->cart->id)->get();
             $this->cartCount = $this->cartItems->count();

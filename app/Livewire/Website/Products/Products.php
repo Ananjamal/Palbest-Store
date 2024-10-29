@@ -15,6 +15,8 @@ class Products extends Component
     public $user_id;
     public $newArrivals;
     public $hotSales;
+  
+    public $quantity = 1;
 
     public function mount()
     {
@@ -94,10 +96,25 @@ class Products extends Component
 
     public function addToCart($id)
     {
+        if (!$this->user_id) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'Please login first.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
+
         $this->product = Product::findOrFail($id);
 
         // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
+
+        // Decode the size and color arrays, then select a random option from each
+        $sizes = json_decode($this->product->size, true);
+        $colors = json_decode($this->product->color, true);
+        $randomSize = $sizes[array_rand($sizes)];
+        $randomColor = $colors[array_rand($colors)];
 
         // Check if the item already exists in the cart
         $existingItem = CartItem::where('cart_id', $cart->id)
@@ -105,21 +122,21 @@ class Products extends Component
             ->first();
 
         if ($existingItem) {
-            // Item already exists in cart
             $this->dispatch('swal:alert', [
                 'title' => 'Item Already in Cart',
                 'text' => 'This item is already in your cart.',
                 'icon' => 'info',
             ]);
         } else {
-            // Add the item to the cart
+            // Add the item to the cart with the random size and color
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $this->product->id,
-
+                'size' => $randomSize,
+                'color' => $randomColor,
+                'quantity' => 1, // Default quantity, update as needed
             ]);
 
-            // Success alert
             $this->dispatch('swal:alert', [
                 'title' => 'Success!',
                 'text' => 'Item added to your cart successfully.',
@@ -130,6 +147,7 @@ class Products extends Component
             $this->dispatch('refreshPage');
         }
     }
+
     public function render()
     {
         return view('livewire.website.products.products')->layout('layout.website.app');

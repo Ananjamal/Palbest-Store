@@ -104,20 +104,26 @@ class Carts extends Component
         $this->item_id = null;
     }
     public function sendDataToCheckout()
-{
-    $data = [
-        'cartItems' => $this->cartItems,
-        'subTotal' => $this->subTotal,
-        'discount' => $this->discount,
-        'totalPrice' => $this->totalPrice,
-    ];
+    {
+        if (empty($this->cartItems)) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error!',
+                'text' => 'Please add some items to your cart first.',
+                'icon' => 'error',
+            ]);
+            return;
+        }
+        $data = [
+            'cartItems' => $this->cartItems,
+            'subTotal' => $this->subTotal,
+            'discount' => $this->discount,
+            'totalPrice' => $this->totalPrice,
+        ];
 
-    session()->put('checkout_data', $data);
+        session()->put('checkout_data', $data);
 
-    return redirect()->route('checkout');
-}
-
-
+        return redirect()->route('checkout');
+    }
 
     public function render()
     {

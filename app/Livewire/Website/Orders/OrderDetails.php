@@ -3,6 +3,7 @@
 namespace App\Livewire\Website\Orders;
 
 use Livewire\Component;
+use App\Models\OrderItem;
 
 class OrderDetails extends Component
 {

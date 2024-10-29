@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Website\Orders;
+namespace App\Livewire\Website\Orders;
 
 use App\Models\Order;
 use Livewire\Component;
@@ -18,26 +18,33 @@ class CancelOrder extends Component
     {
         $order = Order::find($this->order_id);
 
-        if ($order->status == 'cancelled') {
-            $this->dispatchBrowserEvent('alert', ['type' => 'error', 'message' => 'Order is already cancelled.']);
-            $this->emit('hideModal', 'cancelOrder'); // Emit event to notify JS
+        if ($order->status == 'canceled') {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'Order is already cancelled.',
+                'icon' => 'warning',
+            ]);
+            $this->dispatch('close-modal'); 
+
             return;
         }
 
-        $order->update(['status' => 'cancelled']);
-
-        $this->dispatchBrowserEvent('alert', ['type' => 'success', 'message' => 'Your order has been successfully canceled.']);
-        $this->emit('hideModal', 'cancelOrder'); // Emit event to notify JS
-
-        $this->emit('refreshPage');
+        $order->update(['status' => 'canceled']);
+        $this->dispatch('swal:alert', [
+            'title' => 'Success!',
+            'text' => 'Your order has been successfully canceled.',
+            'icon' => 'success',
+        ]);
+        // $this->dispatch('close-modal'); 
+        $this->dispatch('refreshOrder');
     }
     public function refresh()
     {
-        $this->emit('refreshPage');
+        $this->dispatch('refreshOrder');
     }
 
     public function render()
     {
-        return view('livewire.website.orders.cancel-order')->layout('layout.website.orders');
+        return view('livewire.website.orders.cancel-order')->layout('layout.website.app');
     }
 }

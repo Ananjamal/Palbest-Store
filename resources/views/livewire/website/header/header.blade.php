@@ -38,6 +38,9 @@
                     @auth
                         <a href="{{ route('orders') }}" class="icon-link">
                             <i class="fa-solid fa-truck"></i>
+                            @auth
+                            <span class="badge">{{ $ordersCount }}</span>
+                        @endauth
                         </a>
                         <a href="{{ route('profile.edit') }}" class="btn btn-primary" >Profile</a>
                         @role('admin')

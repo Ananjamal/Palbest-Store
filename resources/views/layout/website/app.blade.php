@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="{{ asset('assets/website/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('assets/website/css/style.css') }}" type="text/css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 </head>
 
@@ -82,7 +82,7 @@
     <script src="{{ asset('assets/website/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('assets/website/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/website/js/main.js') }}"></script>
-    <script src="{{ asset('assets/admin/js/modals.js') }}"></script>
+    {{-- <script src="{{ asset('assets/admin/js/modals.js') }}"></script> --}}
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -97,35 +97,11 @@
             });
         });
     </script>
+   
 
+    {{-- <script src="{{ asset('assets/admin/js/modals.js') }}"></script> --}}
 
-<script>
-    window.addEventListener('confirm-cancel', event => {
-        const orderId = event.detail.orderId; // Get orderId from the event
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "Do you really want to cancel this order?",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, cancel it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                console.log("Dispatching cancelOrder for ID:", orderId); // Debugging log
-                Livewire.dispatch('cancelOrder', orderId); // Dispatch the event
-                Swal.fire(
-                    'Cancelled!',
-                    'Your order has been cancelled.',
-                    'success'
-                ).then(() => {
-                    // Optionally refresh the orders list or update the view
-                    Livewire.dispatch('refresh');
-                });
-            }
-        });
-    });
-</script>
+  
 
 
 

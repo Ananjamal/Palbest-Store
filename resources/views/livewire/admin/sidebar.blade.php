@@ -53,6 +53,12 @@
                 <i class="fa-solid fa-dollar-sign menu-icon"></i>
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.orders') }}">
+                <span class="menu-title">Orders</span>
+                <i class="fa-solid fa-truck menu-icon"></i>
+            </a>
+        </li>
         {{-- <!-- Basic UI Elements -->
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">

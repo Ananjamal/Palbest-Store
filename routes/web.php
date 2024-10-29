@@ -18,12 +18,12 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('dashboard', App\Livewire\Admin\Main::class)->name('dashboard');
-    Route::get('categories', App\Livewire\Admin\Categories\Categories::class)->name('categories');
-    Route::get('products', App\Livewire\Admin\Products\Products::class)->name('products');
-    Route::get('inventory', App\Livewire\Admin\Inventory\Inventories::class)->name('inventory');
-    Route::get('coupon', App\Livewire\Admin\Coupons\Coupons::class)->name('coupons');
-
+    Route::get('admin/dashboard', App\Livewire\Admin\Main::class)->name('dashboard');
+    Route::get('admin/categories', App\Livewire\Admin\Categories\Categories::class)->name('categories');
+    Route::get('admin/products', App\Livewire\Admin\Products\Products::class)->name('products');
+    Route::get('admin/inventory', App\Livewire\Admin\Inventory\Inventories::class)->name('inventory');
+    Route::get('admin/coupon', App\Livewire\Admin\Coupons\Coupons::class)->name('coupons');
+    Route::get('admin/orders', App\Livewire\Admin\Orders\Orders::class)->name('admin.orders');
 });
 
 Route::get('/', App\Livewire\Website\Main::class)->name('/');

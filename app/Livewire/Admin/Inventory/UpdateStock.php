@@ -12,7 +12,7 @@ class UpdateStock extends Component
     public $inventory;
 
     protected $rules = [
-        'stock' => 'numeric|min:1',
+        'stock' => 'numeric|min:0',
     ];
     public function updated($propertyName)
     {

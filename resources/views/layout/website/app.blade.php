@@ -27,6 +27,34 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
+{{-- Add your CSS for animations --}}
+<style>
+    .filter-button {
+        cursor: pointer;
+        transition: transform 0.2s; /* Smooth scaling effect */
+    }
+
+    .filter-button:hover {
+        transform: scale(1.05); /* Slightly enlarge button on hover */
+    }
+
+    .fade-in {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out; /* Fade-in effect */
+    }
+
+    /* Active state */
+    .active {
+        font-weight: bold;
+        color: #007bff; /* Change color of active button */
+    }
+
+    /* Trigger the fade-in effect */
+    .product__filter .fade-in {
+        opacity: 1; /* Reset opacity for visible items */
+    }
+</style>
+
 </head>
 
 <body>
@@ -97,16 +125,30 @@
             });
         });
     </script>
-   
+
 
     {{-- <script src="{{ asset('assets/admin/js/modals.js') }}"></script> --}}
 
-  
 
 
 
 
 
+
+{{-- Add JavaScript for fade-in effect --}}
+<script>
+    document.addEventListener('livewire:load', function () {
+        Livewire.hook('message.processed', (message, component) => {
+            // Find all product items and add fade-in class after Livewire updates
+            const items = document.querySelectorAll('.product__filter .fade-in');
+            items.forEach(item => {
+                item.classList.remove('fade-in'); // Remove the class
+                void item.offsetWidth; // Trigger reflow to restart the animation
+                item.classList.add('fade-in'); // Add it back to trigger fade-in
+            });
+        });
+    });
+</script>
 
 
     @livewireScripts()

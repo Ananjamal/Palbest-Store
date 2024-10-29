@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\Favorite;
+use App\Models\Inventory;
 use Illuminate\Support\Facades\Auth;
 
 class Products extends Component
@@ -15,8 +16,10 @@ class Products extends Component
     public $user_id;
     public $newArrivals;
     public $hotSales;
-  
+    public $hotsales_id;
+    public $arrival_id;
     public $quantity = 1;
+    public $categoryFilter = 'best_sellers';
 
     public function mount()
     {
@@ -104,6 +107,15 @@ class Products extends Component
             ]);
             return;
         }
+        $inventoryCheck = Inventory::where('product_id', $id)->first();
+        if ($inventoryCheck->stock == 0) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'This product is out of stock.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
 
         $this->product = Product::findOrFail($id);
 
@@ -148,6 +160,15 @@ class Products extends Component
         }
     }
 
+    public function showArrivals()
+    {
+        $this->categoryFilter = 'new_arrivals';
+    }
+
+    public function showHotsales()
+    {
+        $this->categoryFilter = 'hot_sales';
+    }
     public function render()
     {
         return view('livewire.website.products.products')->layout('layout.website.app');

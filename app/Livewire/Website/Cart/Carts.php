@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Coupon;
 use Livewire\Component;
 use App\Models\CartItem;
+use App\Models\Inventory;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,24 +35,51 @@ class Carts extends Component
     public function increaseQty($id)
     {
         $cartItem = CartItem::findOrFail($id);
-        $cartItem->update([
-            'quantity' => ++$cartItem->quantity,
-        ]);
-        $this->mount();
+        $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
+
+        if ($inventoryCheck && $cartItem->quantity < $inventoryCheck->stock) {
+            // Decrease inventory stock and increase cart item quantity
+            $cartItem->update(['quantity' => ++$cartItem->quantity]);
+            $inventoryCheck->decrement('stock', 1); // Decrease stock by 1
+            $this->mount();
+        } else {
+            // Notify user if not enough stock
+            $this->dispatch('swal:alert', [
+                'title' => 'Error!',
+                'text' => 'Not enough stock available.',
+                'icon' => 'error',
+            ]);
+        }
     }
+
     public function decreaseQty($id)
     {
         $cartItem = CartItem::findOrFail($id);
+
         if ($cartItem->quantity > 1) {
-            $cartItem->update([
-                'quantity' => --$cartItem->quantity,
+            $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
+
+            if ($inventoryCheck) {
+                // Increase inventory stock and decrease cart item quantity
+                $cartItem->update(['quantity' => --$cartItem->quantity]);
+                $inventoryCheck->increment('stock', 1); // Increase stock by 1
+                $this->mount();
+            }
+        } else {
+            $this->dispatch('swal:alert', [
+                'title' => 'Notice',
+                'text' => 'Cannot decrease quantity below 1. Consider deleting the item if you wish to remove it from the cart.',
+                'icon' => 'info',
             ]);
-            $this->mount();
         }
     }
+
     public function deleteFromCart($id)
     {
-        CartItem::destroy($id);
+        $cartItem = CartItem::findOrFail($id);
+        $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
+        $inventoryCheck->update(['stock' => $inventoryCheck->stock + $cartItem->quantity]);
+        $cartItem->delete();
         $this->dispatch('swal:alert', [
             'title' => 'Success!',
             'text' => 'Item deleted from your cart successfully.',
@@ -60,6 +88,7 @@ class Carts extends Component
         $this->mount();
         $this->dispatch('refreshPage');
     }
+
     public function applyCoupon()
     {
         if (empty($this->cartItems)) {

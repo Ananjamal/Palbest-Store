@@ -177,7 +177,11 @@
                                     <button wire:click='addToCart({{ $item->id }})' class="add-cart">+ Add To Cart</button>
                                     <div class="rating">
                                         @for ($i = 1; $i <= 5; $i++)
-                                            <i class="fa {{ $i <= $item->stars ? 'fa-star' : 'fa-star-o' }}" style="color: #ebd13f;"></i>
+                                            @if ($i <= $item->stars)
+                                                <i class="fa fa-star" style="color: #ebd13f;"></i>
+                                            @else
+                                                <i class="fa fa-star-o"></i>
+                                            @endif
                                         @endfor
                                     </div>
                                     <h5>${{ $item->price }}</h5>

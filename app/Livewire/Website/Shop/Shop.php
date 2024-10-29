@@ -15,6 +15,7 @@ class Shop extends Component
     public $products;
     public $user_id;
     public $product;
+    public $quantity = 1;
     public function mount()
     {
         $this->user_id = Auth::id();
@@ -83,8 +84,10 @@ class Shop extends Component
             ]);
             return;
         }
-        $inventoryCheck = Inventory::where('product_id',$id)->first();
-        if ($inventoryCheck->stock == 1) {
+
+        $this->product = Product::findOrFail($id);
+        $inventoryCheck = Inventory::where('product_id', $this->product->id)->first();
+        if ($inventoryCheck->stock == 0) {
             $this->dispatch('swal:alert', [
                 'title' => 'Error',
                 'text' => 'This product is out of stock.',
@@ -92,9 +95,14 @@ class Shop extends Component
             ]);
             return;
         }
-
-
-        $this->product = Product::findOrFail($id);
+        if ($this->quantity > $inventoryCheck->stock) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Insufficient Stock!',
+                'text' => "Sorry, we only have {$inventoryCheck->stock} items available for this product. Please adjust your order quantity.",
+                'icon' => 'error',
+            ]);
+            return;
+        }
 
         // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
@@ -123,7 +131,11 @@ class Shop extends Component
                 'product_id' => $this->product->id,
                 'size' => $randomSize,
                 'color' => $randomColor,
-                'quantity' => 1, // Default quantity, update as needed
+                'quantity' => $this->quantity, // Use the quantity from the class property
+            ]);
+
+            $inventoryCheck->update([
+                'stock' => $inventoryCheck->stock - $this->quantity,
             ]);
 
             $this->dispatch('swal:alert', [
@@ -136,7 +148,6 @@ class Shop extends Component
             $this->dispatch('refreshPage');
         }
     }
-
 
     public function render()
     {

@@ -107,7 +107,9 @@ class Products extends Component
             ]);
             return;
         }
-        $inventoryCheck = Inventory::where('product_id', $id)->first();
+
+        $this->product = Product::findOrFail($id);
+        $inventoryCheck = Inventory::where('product_id', $this->product->id)->first();
         if ($inventoryCheck->stock == 0) {
             $this->dispatch('swal:alert', [
                 'title' => 'Error',
@@ -116,8 +118,14 @@ class Products extends Component
             ]);
             return;
         }
-
-        $this->product = Product::findOrFail($id);
+        if ($this->quantity > $inventoryCheck->stock) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Insufficient Stock!',
+                'text' => "Sorry, we only have {$inventoryCheck->stock} items available for this product. Please adjust your order quantity.",
+                'icon' => 'error',
+            ]);
+            return;
+        }
 
         // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
@@ -146,7 +154,11 @@ class Products extends Component
                 'product_id' => $this->product->id,
                 'size' => $randomSize,
                 'color' => $randomColor,
-                'quantity' => 1, // Default quantity, update as needed
+                'quantity' => $this->quantity, // Use the quantity from the class property
+            ]);
+
+            $inventoryCheck->update([
+                'stock' => $inventoryCheck->stock - $this->quantity,
             ]);
 
             $this->dispatch('swal:alert', [

@@ -7,6 +7,7 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\CartItem;
 use App\Models\Favorite;
+use App\Models\Inventory;
 use Illuminate\Support\Facades\Auth;
 
 class Productdetails extends Component
@@ -47,7 +48,23 @@ class Productdetails extends Component
 
         // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
-
+        $inventory = Inventory::where('product_id', $this->product->id)->first();
+        if ($inventory->stock == 0) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'This product is out of stock.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
+        if ($this->quantity > $inventory->stock) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Insufficient Stock!',
+                'text' => "Sorry, we only have {$inventory->stock} items available for this product. Please adjust your order quantity.",
+                'icon' => 'error',
+            ]);
+            return;
+        }
         // Check if the item already exists in the cart
         $existingItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $this->product->id)
@@ -72,6 +89,10 @@ class Productdetails extends Component
                 'quantity' => $this->quantity,
             ]);
 
+            $inventory->update([
+                'stock' => $inventory->stock - $this->quantity,
+            ]);
+
             // Success alert
             $this->dispatch('swal:alert', [
                 'title' => 'Success!',
@@ -79,7 +100,6 @@ class Productdetails extends Component
                 'icon' => 'success',
             ]);
             $this->dispatch('refreshPage');
-
         }
     }
 

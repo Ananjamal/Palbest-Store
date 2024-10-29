@@ -65,6 +65,7 @@ class Checkout extends Component
             'discount' => $this->discount,
             'payment_method' => $this->payment_method,
         ]);
+        
         foreach ($this->cartItems as $cart) {
             $orderItems = OrderItem::create([
                 'order_id' => $order->id,
@@ -93,6 +94,7 @@ class Checkout extends Component
             'icon' => 'success',
         ]);
         Cart::where('user_id', $this->user_id)->delete();
+
         sleep(5);
         return redirect()->route('/');
     }

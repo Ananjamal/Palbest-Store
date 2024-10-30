@@ -53,6 +53,20 @@
     .product__filter .fade-in {
         opacity: 1; /* Reset opacity for visible items */
     }
+    .list-group-item {
+    transition: transform 0.2s; /* Smooth scale transition */
+}
+
+.list-group-item:hover {
+    transform: scale(1.02); /* Slightly scale up on hover */
+    background-color: #f8f9fa; /* Light background on hover */
+}
+
+.img-thumbnail {
+    border: 1px solid #e0e0e0; /* Optional border for images */
+    border-radius: 0.5rem; /* Rounded corners */
+}
+
 </style>
 
 </head>
@@ -85,15 +99,7 @@
         @livewire('website.footer.footer')
     </div>
 
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
+
     <!-- Search End -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

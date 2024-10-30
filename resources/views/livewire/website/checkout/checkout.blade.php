@@ -36,8 +36,8 @@
                                             <input wire:model='first_name' type="text">
                                         </div>
                                         @error('first_name')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="checkout__input">
@@ -45,8 +45,8 @@
                                             <input wire:model='last_name' type="text">
                                         </div>
                                         @error('last_name')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                            <span class="error text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="checkout__input">
@@ -58,10 +58,11 @@
                                 </div>
                                 <div class="checkout__input">
                                     <p>Address<span>*</span></p>
-                                    <input wire:model='address' type="text" placeholder="Street Address" class="checkout__input__add">
+                                    <input wire:model='address' type="text" placeholder="Street Address"
+                                        class="checkout__input__add">
                                     @error('address')
-                                    <span class="error text-danger">{{ $message }}</span>
-                                @enderror
+                                        <span class="error text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="checkout__input">
                                     <p>Town/City<span>*</span></p>
@@ -90,8 +91,8 @@
                                             <p>Phone<span>*</span></p>
                                             <input wire:model='phone' type="number">
                                             @error('phone')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                                <span class="error text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -99,8 +100,8 @@
                                             <p>Email<span>*</span></p>
                                             <input wire:model='email' type="email">
                                             @error('email')
-                                        <span class="error text-danger">{{ $message }}</span>
-                                    @enderror
+                                                <span class="error text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
@@ -116,9 +117,12 @@
 
                                     <ul class="mb-3 checkout__total__products list-group">
                                         @foreach ($cartItems as $item)
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                {{ $loop->iteration }}. {{ $item->product->name }} (x{{ $item->quantity }})
-                                                <span>$ {{ number_format($item->product->price * $item->quantity, 2) }}</span>
+                                            <li
+                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                {{ $loop->iteration }}. {{ $item->product->name }}
+                                                (x{{ $item->quantity }})
+                                                <span>$
+                                                    {{ number_format($item->product->price * $item->quantity, 2) }}</span>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -130,7 +134,9 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Discount
-                                            <span>${{ number_format($discount, 2) }}</span>
+                                            <span>{{ $discount_amount }}%
+                                                (${{ number_format($discountPercentage, 2) }})
+
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center">
                                             Total
@@ -139,23 +145,31 @@
                                     </ul>
 
                                     <div class="mb-2 checkout__input__radio form-check">
-                                        <input type="radio" class="form-check-input" name="payment_method" wire:model='payment_method' id="payment" value="check">
+                                        <input type="radio" class="form-check-input" name="payment_method"
+                                            wire:model='payment_method' id="payment" value="check">
                                         <label class="form-check-label" for="payment">Check Payment</label>
                                     </div>
 
                                     <div class="mb-3 checkout__input__radio form-check">
-                                        <input type="radio" class="form-check-input" name="payment_method" wire:model='payment_method' id="paypal" value="paypal">
+                                        <input type="radio" class="form-check-input" name="payment_method"
+                                            wire:model='payment_method' id="paypal" value="paypal">
                                         <label class="form-check-label" for="paypal">Paypal</label>
                                     </div>
                                     <div class="mb-3 checkout__input__radio form-check">
-                                        <input type="radio" class="form-check-input" name="payment_method" wire:model='payment_method' id="visacard" value="visacard">
+                                        <input type="radio" class="form-check-input" name="payment_method"
+                                            wire:model='payment_method' id="visacard" value="visacard">
                                         <label class="form-check-label" for="visacard">Visa Card</label>
                                     </div>
                                     @error('payment_method')
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
-                                <hr>
-                                    <button wire:click.prevent='placeOrder' class="btn btn-primary btn-block">PLACE ORDER</button>
+                                    <hr>
+                                    <button wire:click.prevent="placeOrder" class="btn btn-primary btn-block"
+                                        wire:loading.attr="disabled">
+                                        <span wire:loading.remove>PLACE ORDER</span>
+                                        <span wire:loading>Loading...</span>
+                                    </button>
+
                                 </div>
 
                             </div>
@@ -166,5 +180,5 @@
             </div>
         </section>
         <!-- Checkout Section End -->
-        
+
     </div>

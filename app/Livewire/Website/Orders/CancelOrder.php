@@ -21,11 +21,16 @@ class CancelOrder extends Component
         if ($order->status == 'canceled') {
             $this->dispatch('swal:alert', [
                 'title' => 'Error',
-                'text' => 'Order is already cancelled.',
+                'text' => 'This order has already been canceled.',
                 'icon' => 'warning',
             ]);
-            $this->dispatch('close-modal'); 
-
+            return;
+        }elseif($order->status == 'delivered'){
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'This order has already been delivered.',
+                'icon' => 'warning',
+            ]);
             return;
         }
 
@@ -35,7 +40,7 @@ class CancelOrder extends Component
             'text' => 'Your order has been successfully canceled.',
             'icon' => 'success',
         ]);
-        // $this->dispatch('close-modal'); 
+        // $this->dispatch('close-modal');
         $this->dispatch('refreshOrder');
     }
     public function refresh()

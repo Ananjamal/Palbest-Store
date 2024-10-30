@@ -110,7 +110,8 @@
                             <h6>Cart total</h6>
                             <ul>
                                 <li>Subtotal <span>${{ number_format($subTotal, 2) }}</span></li>
-                                <li>Discount <span>${{ number_format($discount, 2) }}</span></li>
+                                <li>Discount <span>{{ $discount_amount }}% (${{ number_format($discountPercentage, 2) }})</span>
+                                </li>
                                 <li>Total <span>${{ number_format($totalPrice, 2) }}</span></li>
                             </ul>
 

@@ -10,7 +10,7 @@
         </div>
 
         <div class="form-group">
-            <label for="code" class="form-label">Coupon Discount $</label>
+            <label for="code" class="form-label">Coupon Discount %</label>
             <input type="text" class="form-control" id="discount" placeholder="Enter discount number"
                 wire:model.defer="discount_amount">
             @error('discount_amount')

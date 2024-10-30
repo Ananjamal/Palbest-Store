@@ -19,7 +19,8 @@ class Carts extends Component
     public $quantity;
     public $item_id;
     public $coupon_code;
-    public $discount = 0;
+    public $discount_amount = 0;
+    public $discountPercentage = 0;
 
     public function mount()
     {
@@ -37,11 +38,12 @@ class Carts extends Component
         $cartItem = CartItem::findOrFail($id);
         $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
 
-        if ($inventoryCheck && $cartItem->quantity < $inventoryCheck->stock) {
-            // Decrease inventory stock and increase cart item quantity
-            $cartItem->update(['quantity' => ++$cartItem->quantity]);
-            $inventoryCheck->decrement('stock', 1); // Decrease stock by 1
-            $this->mount();
+        // Check if there is enough stock available
+        if ($inventoryCheck->stock !== 0) {
+            // Increase cart item quantity and decrease inventory stock
+            $cartItem->increment('quantity'); // This increments the quantity by 1
+            $inventoryCheck->decrement('stock'); // Decrease stock by 1
+            $this->mount(); // Refresh the cart data
         } else {
             // Notify user if not enough stock
             $this->dispatch('swal:alert', [
@@ -60,10 +62,9 @@ class Carts extends Component
             $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
 
             if ($inventoryCheck) {
-                // Increase inventory stock and decrease cart item quantity
-                $cartItem->update(['quantity' => --$cartItem->quantity]);
-                $inventoryCheck->increment('stock', 1); // Increase stock by 1
-                $this->mount();
+                $cartItem->decrement('quantity');
+                $inventoryCheck->increment('stock');
+                $this->mount(); 
             }
         } else {
             $this->dispatch('swal:alert', [
@@ -102,7 +103,8 @@ class Carts extends Component
         $couponCode = Coupon::where('code', $this->coupon_code)->first();
 
         if ($couponCode) {
-            $this->discount = $couponCode->discount_amount;
+            $this->discount_amount = $couponCode->discount_amount;
+            $this->discountPercentage = ($this->subTotal * $couponCode->discount_amount) / 100;
             $this->dispatch('swal:alert', [
                 'title' => 'Success!',
                 'text' => 'Coupon applied successfully.',
@@ -111,7 +113,8 @@ class Carts extends Component
             $this->mount(); // Ensure total price is recalculated after discount
         } else {
             // Optionally, you can dispatch an alert for an invalid coupon
-            $this->discount = 0;
+            $this->discount_amount = 0;
+            $this->discountPercentage = 0;
             $this->dispatch('swal:alert', [
                 'title' => 'Error!',
                 'text' => 'Invalid coupon code.',
@@ -125,7 +128,7 @@ class Carts extends Component
         $this->subTotal = $this->cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
-        $this->totalPrice = $this->subTotal - $this->discount;
+        $this->totalPrice = $this->subTotal - $this->discountPercentage;
     }
     #[On('refreshPage')]
     public function refresh()
@@ -145,7 +148,8 @@ class Carts extends Component
         $data = [
             'cartItems' => $this->cartItems,
             'subTotal' => $this->subTotal,
-            'discount' => $this->discount,
+            'discount_amount' => $this->discount_amount,
+            'discountPercentage' => $this->discountPercentage,
             'totalPrice' => $this->totalPrice,
         ];
 

@@ -35,7 +35,7 @@
                                 <tr>
                                     <th class="text-center">ID</th>
                                     <th class="text-center">Code</th>
-                                    <th class="text-center">Discount</th>
+                                    <th class="text-center">Discount %</th>
                                     <th class="text-center">Valid_Until</th>
                                     <th class="text-center">Valid_From</th>
                                     <th class="text-center">Actions</th>
@@ -46,7 +46,7 @@
                                     <tr>
                                         <td class="text-center">{{ $coupon->id }}</td>
                                         <td class="text-center">{{ $coupon->code }}</td>
-                                        <td class="text-center">{{ $coupon->discount_amount }}$</td>
+                                        <td class="text-center">{{ $coupon->discount_amount }}%</td>
                                         <td class="text-center">{{ $coupon->valid_from }}</td>
                                         <td class="text-center">{{ $coupon->valid_until }}</td>
 

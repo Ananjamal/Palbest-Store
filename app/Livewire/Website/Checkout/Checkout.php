@@ -14,7 +14,9 @@ class Checkout extends Component
 {
     public $cartItems = [];
     public $subTotal = 0;
-    public $discount = 0;
+    public $discount_amount = 0;
+
+    public $discountPercentage = 0;
     public $totalPrice = 0;
     public $user_id;
     public $first_name;
@@ -52,7 +54,8 @@ class Checkout extends Component
             $checkoutData = session()->get('checkout_data');
             $this->cartItems = $checkoutData['cartItems'];
             $this->subTotal = $checkoutData['subTotal'];
-            $this->discount = $checkoutData['discount'];
+            $this->discount_amount = $checkoutData['discount_amount'];
+            $this->discountPercentage = $checkoutData['discountPercentage'];
             $this->totalPrice = $checkoutData['totalPrice'];
         }
     }
@@ -62,10 +65,10 @@ class Checkout extends Component
         $order = Order::create([
             'user_id' => $this->user_id,
             'total_amount' => $this->totalPrice,
-            'discount' => $this->discount,
+            'discount' => $this->discount_amount,
             'payment_method' => $this->payment_method,
         ]);
-        
+
         foreach ($this->cartItems as $cart) {
             $orderItems = OrderItem::create([
                 'order_id' => $order->id,
@@ -95,7 +98,6 @@ class Checkout extends Component
         ]);
         Cart::where('user_id', $this->user_id)->delete();
 
-        sleep(5);
         return redirect()->route('/');
     }
     public function render()

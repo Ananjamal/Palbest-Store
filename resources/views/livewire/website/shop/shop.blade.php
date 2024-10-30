@@ -22,8 +22,10 @@
                     <div class="col-lg-3">
                         <div class="shop__sidebar">
                             <div class="shop__sidebar__search">
-                                <form action="#">
-                                    <input type="text" placeholder="Search...">
+                                <form wire:submit.prevent="loadProducts">
+                                    <input type="text" wire:model.lazy="searchTerm"
+                                        wire:input="setSearchTerm($event.target.value)"
+                                        placeholder="Search products...">
                                     <button type="submit"><span class="icon_search"></span></button>
                                 </form>
                             </div>
@@ -37,15 +39,15 @@
                                             <div class="card-body">
                                                 <div class="shop__sidebar__categories">
                                                     <ul class="nice-scroll">
-                                                        <li><a href="#">Men (20)</a></li>
-                                                        <li><a href="#">Women (20)</a></li>
-                                                        <li><a href="#">Bags (20)</a></li>
-                                                        <li><a href="#">Clothing (20)</a></li>
-                                                        <li><a href="#">Shoes (20)</a></li>
-                                                        <li><a href="#">Accessories (20)</a></li>
-                                                        <li><a href="#">Kids (20)</a></li>
-                                                        <li><a href="#">Kids (20)</a></li>
-                                                        <li><a href="#">Kids (20)</a></li>
+                                                            @foreach ($categories as $category)
+                                                                <li>
+                                                                    <a href="#" wire:click.prevent="setCategory({{ $category->id }})">
+                                                                        {{ $category->name }} ({{ $category->products_count }}) <!-- Display product count -->
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+
                                                     </ul>
                                                 </div>
                                             </div>
@@ -59,12 +61,24 @@
                                             <div class="card-body">
                                                 <div class="shop__sidebar__price">
                                                     <ul>
-                                                        <li><a href="#">$0.00 - $50.00</a></li>
-                                                        <li><a href="#">$50.00 - $100.00</a></li>
-                                                        <li><a href="#">$100.00 - $150.00</a></li>
-                                                        <li><a href="#">$150.00 - $200.00</a></li>
-                                                        <li><a href="#">$200.00 - $250.00</a></li>
-                                                        <li><a href="#">250.00+</a></li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('0-50')">$0 - $50</a>
+                                                        </li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('50-100')">$50 -
+                                                                $100</a></li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('100-150')">$100 -
+                                                                $150</a></li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('150-200')">$150 -
+                                                                $200</a></li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('200-250')">$200 -
+                                                                $250</a></li>
+                                                        <li><a href="#"
+                                                                wire:click.prevent="selectPriceRange('250+')">$250+</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -72,83 +86,51 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseFour">Size</a>
+                                            <a data-toggle="collapse" data-target="#collapseFive">Sizes</a>
                                         </div>
-                                        <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                                        <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
                                             <div class="card-body">
-                                                <div class="shop__sidebar__size">
-                                                    <label for="xs">xs
-                                                        <input type="radio" id="xs">
-                                                    </label>
-                                                    <label for="sm">s
-                                                        <input type="radio" id="sm">
-                                                    </label>
-                                                    <label for="md">m
-                                                        <input type="radio" id="md">
-                                                    </label>
-                                                    <label for="xl">xl
-                                                        <input type="radio" id="xl">
-                                                    </label>
-                                                    <label for="2xl">2xl
-                                                        <input type="radio" id="2xl">
-                                                    </label>
-                                                    <label for="xxl">xxl
-                                                        <input type="radio" id="xxl">
-                                                    </label>
-                                                    <label for="3xl">3xl
-                                                        <input type="radio" id="3xl">
-                                                    </label>
-                                                    <label for="4xl">4xl
-                                                        <input type="radio" id="4xl">
-                                                    </label>
+                                                <div class="shop__sidebar__sizes">
+                                                    @foreach ($sizes as $size)
+                                                        <label>
+                                                            <input type="radio" wire:model="selectedSize"
+                                                                value="{{ $size }}"
+                                                                wire:click="selectSize('{{ $size }}')">
+                                                            {{ strtoupper($size) }}
+                                                        </label>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="card">
                                         <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseFive">Colors</a>
+                                            <a data-toggle="collapse" data-target="#collapseSix">Colors</a>
                                         </div>
-                                        <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                                        <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
                                             <div class="card-body">
-                                                <div class="shop__sidebar__color">
-                                                    <label class="c-1" for="sp-1">
-                                                        <input type="radio" id="sp-1">
-                                                    </label>
-                                                    <label class="c-2" for="sp-2">
-                                                        <input type="radio" id="sp-2">
-                                                    </label>
-                                                    <label class="c-3" for="sp-3">
-                                                        <input type="radio" id="sp-3">
-                                                    </label>
-                                                    <label class="c-4" for="sp-4">
-                                                        <input type="radio" id="sp-4">
-                                                    </label>
-                                                    <label class="c-5" for="sp-5">
-                                                        <input type="radio" id="sp-5">
-                                                    </label>
-                                                    <label class="c-6" for="sp-6">
-                                                        <input type="radio" id="sp-6">
-                                                    </label>
-                                                    <label class="c-7" for="sp-7">
-                                                        <input type="radio" id="sp-7">
-                                                    </label>
-                                                    <label class="c-8" for="sp-8">
-                                                        <input type="radio" id="sp-8">
-                                                    </label>
-                                                    <label class="c-9" for="sp-9">
-                                                        <input type="radio" id="sp-9">
-                                                    </label>
+                                                <div class="shop__sidebar__colors">
+                                                    @foreach ($colors as $color)
+                                                        <label>
+                                                            <input type="radio" wire:model="selectedColor"
+                                                                value="{{ $color }}"
+                                                                wire:click="selectColor('{{ $color }}')">
+                                                            {{ ucfirst($color) }}
+                                                        </label>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                     <div class="col-lg-9">
-                        <div class="shop__product__option">
+                        {{-- <div class="shop__product__option">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <div class="shop__product__option__left">
@@ -166,72 +148,78 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="row">
-                            @foreach ($products as $item)
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    <div class="product__item">
-                                        <div class="product__item__pic">
-                                            <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}"
-                                                class="img-fluid">
-                                            @if ($item->inventory->stock == 0)
-                                                <span class="label">out of stock</span>
-                                            @endif
+                            @if ($products->isEmpty())
+                                <div style="text-align: center; padding: 20px; color: #555;">
+                                    <h3>No Products Found</h3>
+                                </div>
+                            @else
+                                @foreach ($products as $item)
+                                    <div class="col-lg-4 col-md-6 col-sm-6">
+                                        <div class="product__item">
+                                            <div class="product__item__pic">
+                                                <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}"
+                                                    class="img-fluid">
+                                                @if ($item->inventory->stock == 0)
+                                                    <span class="label">out of stock</span>
+                                                @endif
 
-                                            <ul class="product__hover">
-                                                <li wire:click='addToFavorite({{ $item->id }})'>
-                                                    @if ($item->isFavorited)
-                                                        <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
-                                                    @else
-                                                        <img src="{{ asset('assets/website/img/icon/heart.png') }}"
-                                                            alt="Favorite">
-                                                    @endif
-                                                </li>
-                                                <li><a href="{{ route('productDetails', $item->id) }}">
-                                                        <img src="{{ asset('assets/website/img/icon/search.png') }}"
-                                                            alt="Search"></a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="product__item__text">
-                                            <h6>{{ $item->name }}</h6>
-
-                                            <!-- Display Sizes as Text -->
-                                            @if (!empty(json_decode($item->size, true)))
-                                                <div class="product__size__display">
-                                                    <strong>Sizes:</strong>
-                                                    <span>{{ implode(', ', json_decode($item->size)) }}</span>
-                                                </div>
-                                            @endif
-
-                                            <!-- Display Colors as Badges -->
-                                            @if (!empty(json_decode($item->color, true)))
-                                                <div class="mb-2 product__color__display">
-                                                    <strong>Colors:</strong>
-                                                    @foreach (json_decode($item->color, true) as $color)
-                                                        <span class="color-circle"
-                                                            style="display:inline-block; width:15px; height:15px; background-color:{{ $color }}; border-radius:50%; margin-right:5px;"></span>
-                                                    @endforeach
-                                                </div>
-                                            @endif
-
-                                            <button wire:click='addToCart({{ $item->id }})' class="add-cart">+
-                                                Add To Cart</button>
-                                            <div class="rating">
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    @if ($i <= $item->stars)
-                                                        <i class="fa fa-star" style="color: #ebd13f;"></i>
-                                                    @else
-                                                        <i class="fa fa-star-o"></i>
-                                                    @endif
-                                                @endfor
+                                                <ul class="product__hover">
+                                                    <li wire:click='addToFavorite({{ $item->id }})'>
+                                                        @if ($item->isFavorited)
+                                                            <i class="fa-solid fa-heart" style="color: #ff0000;"></i>
+                                                        @else
+                                                            <img src="{{ asset('assets/website/img/icon/heart.png') }}"
+                                                                alt="Favorite">
+                                                        @endif
+                                                    </li>
+                                                    <li><a href="{{ route('productDetails', $item->id) }}">
+                                                            <img src="{{ asset('assets/website/img/icon/search.png') }}"
+                                                                alt="Search"></a>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                            <h5>${{ $item->price }}</h5>
+                                            <div class="product__item__text">
+                                                <h6>{{ $item->name }}</h6>
+
+                                                <!-- Display Sizes as Text -->
+                                                @if (!empty(json_decode($item->size, true)))
+                                                    <div class="product__size__display">
+                                                        <strong>Sizes:</strong>
+                                                        <span>{{ implode(', ', json_decode($item->size)) }}</span>
+                                                    </div>
+                                                @endif
+
+                                                <!-- Display Colors as Badges -->
+                                                @if (!empty(json_decode($item->color, true)))
+                                                    <div class="mb-2 product__color__display">
+                                                        <strong>Colors:</strong>
+                                                        @foreach (json_decode($item->color, true) as $color)
+                                                            <span class="color-circle"
+                                                                style="display:inline-block; width:15px; height:15px; background-color:{{ $color }}; border-radius:50%; margin-right:5px;"></span>
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+
+                                                <button wire:click='addToCart({{ $item->id }})'
+                                                    class="add-cart">+
+                                                    Add To Cart</button>
+                                                <div class="rating">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        @if ($i <= $item->stars)
+                                                            <i class="fa fa-star" style="color: #ebd13f;"></i>
+                                                        @else
+                                                            <i class="fa fa-star-o"></i>
+                                                        @endif
+                                                    @endfor
+                                                </div>
+                                                <h5>${{ $item->price }}</h5>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-
+                                @endforeach
+                            @endif
 
 
 

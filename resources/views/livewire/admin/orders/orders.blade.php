@@ -5,6 +5,26 @@
         <div class="mt-3 shadow-sm card">
             <div class="card-body">
                 <div class="table-responsive">
+                    @if (session()->has('success'))
+                        {{-- <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div> --}}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>Great!</strong> {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <!-- Error Message -->
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>Oops!</strong> {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                        </div>
+                    @endif
                     <!-- No Orders Message -->
                     @if ($orders->isEmpty())
                         <div class="mt-4 text-center alert alert-info">
@@ -74,8 +94,8 @@
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
-                    <button type="button" wire:click='refresh' class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" wire:click='refresh' class="btn-close btn-close-white"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 @if ($order_id)

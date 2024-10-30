@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Orders;
 
 use App\Models\Order;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class Orders extends Component
 {
@@ -28,6 +29,18 @@ class Orders extends Component
         $this->order_id = null;
         $this->mount();
     }
+    #[On('successflash')]
+    public function flash($message)
+    {
+        session()->flash('success', $message);
+    }
+    #[On('errorflash')]
+    public function errorflash($message)
+    {
+        session()->flash('error', $message);
+    }
+
+
     public function render()
     {
         return view('livewire.admin.orders.orders')->layout('layout.admin.app');

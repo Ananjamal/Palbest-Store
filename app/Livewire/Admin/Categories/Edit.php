@@ -47,7 +47,7 @@ class Edit extends Component
         $this->category->update($data);
         $this->reset(['categoryName', 'categoryDescription', 'newImage']);
         $message = 'category successfully updated.';
-        $this->dispatch('flash', $message);
+        $this->dispatch('successflash', $message);
         $this->dispatch('refreshPage');
         $this->dispatch('close-modal');
     }

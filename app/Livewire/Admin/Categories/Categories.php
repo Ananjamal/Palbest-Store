@@ -10,6 +10,8 @@ class Categories extends Component
 {
 
     public $category_id;
+
+    public $searchTerm;
     // protected $listeners = [
     //     'search' => 'search',
     //     'flash' => 'flash',
@@ -29,6 +31,11 @@ class Categories extends Component
     public function refresh(){
         $this->category_id = null;
     }
+    #[On('search')]
+    public function search($message)
+    {
+        $this->searchTerm = $message;
+    }
     public function deleteCategory($id){
         $this->category_id = $id;
     }
@@ -37,7 +44,7 @@ class Categories extends Component
     }
     public function render()
     {
-        $categories = Category::latest()->get();
+        $categories = Category::where('name', 'like', '%' . $this->searchTerm . '%')->get();
         return view('livewire.admin.categories.categories', [
             'categories' => $categories,
         ])->layout('layout.admin.app');

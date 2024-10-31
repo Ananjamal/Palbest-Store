@@ -12,15 +12,30 @@
             <span class="mdi mdi-menu"></span>
         </button>
         <div class="search-field d-none d-md-block">
-            <form class="d-flex align-items-center h-100" action="#">
+            <form class="d-flex align-items-center h-100" wire:submit.prevent="loadProducts">
                 <div class="input-group">
                     <div class="input-group-prepend bg-transparent">
                         <i class="input-group-text border-0 mdi mdi-magnify"></i>
                     </div>
-                    <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                    <input type="text" class="form-control bg-transparent border-0"
+                           placeholder="Search Products"
+                           wire:model="searchTerm"
+                           wire:keyup="loadProducts">
                 </div>
             </form>
+            {{-- <ul class="list-group mt-2" style="position: absolute; z-index: 1000;">
+                @forelse($results as $result)
+                    <li class="list-group-item">
+                        {{ $result->name }}
+                    </li>
+                @empty
+                    @if(trim($searchTerm) !== '')
+                        <li class="list-group-item text-muted">No results found</li>
+                    @endif
+                @endforelse
+            </ul> --}}
         </div>
+
         <ul class="navbar-nav navbar-nav-right">
 
             <li class="nav-item d-none d-lg-block full-screen-link">

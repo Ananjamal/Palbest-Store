@@ -9,6 +9,7 @@ use App\Models\Favorite;
 use App\Models\Product;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 
 class Header extends Component
 {
@@ -22,6 +23,9 @@ class Header extends Component
     public $searchTerm = ''; // Initialized as an empty string
     public $results = []; // Initialized as an empty array
 
+    // public function refresh(){
+    // }
+    #[On('refreshPage')]
     public function mount()
     {
         $this->user_id = Auth::id();

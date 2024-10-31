@@ -3,7 +3,6 @@
 use Illuminate\Support\Str;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -17,6 +16,7 @@ return [
     |            "memcached", "redis", "dynamodb", "array"
     |
     */
+    'lock' => true,
 
     'driver' => env('SESSION_DRIVER', 'database'),
 
@@ -127,10 +127,7 @@ return [
     |
     */
 
-    'cookie' => env(
-        'SESSION_COOKIE',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_session'
-    ),
+    'cookie' => env('SESSION_COOKIE', Str::slug(env('APP_NAME', 'laravel'), '_') . '_session'),
 
     /*
     |--------------------------------------------------------------------------
@@ -213,5 +210,4 @@ return [
     */
 
     'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
-
 ];

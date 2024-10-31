@@ -4093,7 +4093,7 @@ ol {
 }
 /* login sign up */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
-body {
+/* body {
   font-family: "Roboto", sans-serif;
   color: #818181;
   font-size: 15px;
@@ -4109,7 +4109,7 @@ a {
 
 a:hover {
   color: #d73933;
-}
+} */
 
 .bg-img,
 .form-wrap {

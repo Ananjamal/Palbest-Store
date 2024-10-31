@@ -10,6 +10,7 @@ class Products extends Component
 {
     public $category_id;
     public $product_id;
+    public $searchTerm;
 
     #[On('successflash')]
     public function flash($message)
@@ -36,9 +37,14 @@ class Products extends Component
     {
         $this->product_id = $id;
     }
+    #[On('search')]
+    public function search($message)
+    {
+        $this->searchTerm = $message;
+    }
     public function render()
     {
-        $products = Product::latest()->get();
+        $products = Product::where('name', 'like', '%' . $this->searchTerm . '%')->get();
         return view('livewire.admin.products.products', [
             'products' => $products,
         ])->layout('layout.admin.app');

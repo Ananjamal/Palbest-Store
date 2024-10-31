@@ -164,8 +164,7 @@
                                         <span class="error text-danger">{{ $message }}</span>
                                     @enderror
                                     <hr>
-                                    <button wire:click.prevent="placeOrder" class="btn btn-primary btn-block"
-                                        wire:loading.attr="disabled">
+                                    <button wire:click.prevent="placeOrder" class="btn btn-primary btn-block" wire:loading.attr="disabled">
                                         <span wire:loading.remove>PLACE ORDER</span>
                                         <span wire:loading>Loading...</span>
                                     </button>

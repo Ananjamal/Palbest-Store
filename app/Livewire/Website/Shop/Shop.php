@@ -187,6 +187,8 @@ class Shop extends Component
                 'icon' => 'success',
             ]);
             $this->loadProducts();
+            $this->dispatch('refreshPage');
+
         }
     }
 
@@ -233,6 +235,8 @@ class Shop extends Component
             'text' => 'Item added to your cart successfully.',
             'icon' => 'success',
         ]);
+        $this->dispatch('refreshPage');
+
     }
 
     public function render()

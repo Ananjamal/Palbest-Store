@@ -63,19 +63,84 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="{{ asset('assets/website/css/authStyle.css') }}">
+    <style>
+        .bg-video,
+        .form-wrap {
+            height: 100vh;
+            min-height: 500px;
+        }
+
+        .bg-video {
+            position: relative;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            /* Mobile height */
+            min-height: 200px;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .bg-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Responsive adjustments */
+
+        @media (min-width: 768px) {
+            .bg-video {
+                position: fixed;
+                width: 50%;
+                height: 100vh;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .bg-video {
+                position: fixed;
+                width: 50%;
+                height: 100vh;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .bg-video {
+                position: fixed;
+                width: 60%;
+                height: 100vh;
+            }
+        }
+    </style>
+
+
     @livewireStyles
 </head>
 
 <body>
     <!-- Page Preloader -->
     <div id="preloder">
+
         <div class="loader"></div>
     </div>
 
     <!-- Main Content -->
     <div class="site-wrap d-md-flex align-items-stretch">
         <!-- Background Image Section -->
-        <div class="bg-img" style="background-image: url({{ asset('assets/website/images/img-bg-1.jpg') }})"></div>
+
+        <div class="bg-video">
+            <video autoplay muted loop playsinline>
+                <source
+                    src="{{ asset('assets/website/images/Orange Yellow Circle Illustrative Online Shop Logo.mp4') }}"
+                    type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
 
         <!-- Form Section -->
         <div class="form-wrap">
@@ -130,19 +195,22 @@
                     <div class="mb-2">Don’t have an account? <a href="{{ route('register') }}">Sign up</a></div>
 
                     <!-- Social Login Options -->
-                    <div class="social-account-wrap">
-                        <h4 class="mb-4"><span>or continue with</span></h4>
-                        <ul class="list-unstyled social-account d-flex justify-content-between">
-                            <li><a href="{{route('google')}}"><img src="{{ asset('assets/website/images/icon-google.svg') }}"
-                                        alt="Google logo"></a></li>
-                            <li><a href="#"><img src="{{ asset('assets/website/images/icon-facebook.svg') }}"
-                                        alt="Facebook logo"></a></li>
-                            <li><a href="#"><img src="{{ asset('assets/website/images/icon-apple.svg') }}"
-                                        alt="Apple logo"></a></li>
-                            <li><a href="#"><img src="{{ asset('assets/website/images/icon-twitter.svg') }}"
-                                        alt="Twitter logo"></a></li>
-                        </ul>
+                    <div class="container-fluid bg-light py-3">
+                        <div class="row">
+                            <div class="col-12 text-center social-account-wrap">
+                                <h4 class="mb-4"><span>or continue with</span></h4>
+                                <ul class="list-inline social-account">
+                                    <li class="list-inline-item">
+                                        <a href="{{ route('google') }}">
+                                            <img src="{{ asset('assets/website/images/icon-google.svg') }}"
+                                                alt="Google logo">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                 </form>
             </div>
         </div>

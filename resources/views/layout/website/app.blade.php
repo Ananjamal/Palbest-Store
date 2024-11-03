@@ -27,47 +27,58 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-{{-- Add your CSS for animations --}}
-<style>
-    .filter-button {
-        cursor: pointer;
-        transition: transform 0.2s; /* Smooth scaling effect */
-    }
+    {{-- Add your CSS for animations --}}
+    <style>
+        .filter-button {
+            cursor: pointer;
+            transition: transform 0.2s;
+            /* Smooth scaling effect */
+        }
 
-    .filter-button:hover {
-        transform: scale(1.05); /* Slightly enlarge button on hover */
-    }
+        .filter-button:hover {
+            transform: scale(1.05);
+            /* Slightly enlarge button on hover */
+        }
 
-    .fade-in {
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out; /* Fade-in effect */
-    }
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            /* Fade-in effect */
+        }
 
-    /* Active state */
-    .active {
-        font-weight: bold;
-        color: #007bff; /* Change color of active button */
-    }
+        /* Active state */
+        .active {
+            font-weight: bold;
+            color: #007bff;
+            /* Change color of active button */
+        }
 
-    /* Trigger the fade-in effect */
-    .product__filter .fade-in {
-        opacity: 1; /* Reset opacity for visible items */
-    }
-    .list-group-item {
-    transition: transform 0.2s; /* Smooth scale transition */
-}
+        /* Trigger the fade-in effect */
+        .product__filter .fade-in {
+            opacity: 1;
+            /* Reset opacity for visible items */
+        }
 
-.list-group-item:hover {
-    transform: scale(1.02); /* Slightly scale up on hover */
-    background-color: #f8f9fa; /* Light background on hover */
-}
+        .list-group-item {
+            transition: transform 0.2s;
+            /* Smooth scale transition */
+        }
 
-.img-thumbnail {
-    border: 1px solid #e0e0e0; /* Optional border for images */
-    border-radius: 0.5rem; /* Rounded corners */
-}
+        .list-group-item:hover {
+            transform: scale(1.02);
+            /* Slightly scale up on hover */
+            background-color: #f8f9fa;
+            /* Light background on hover */
+        }
 
-</style>
+        .img-thumbnail {
+            border: 1px solid #e0e0e0;
+            /* Optional border for images */
+            border-radius: 0.5rem;
+            /* Rounded corners */
+        }
+    </style>
+    @livewireStyles <!-- Make sure this is present -->
 
 </head>
 
@@ -141,23 +152,97 @@
 
 
 
-{{-- Add JavaScript for fade-in effect --}}
-<script>
-    document.addEventListener('livewire:load', function () {
-        Livewire.hook('message.processed', (message, component) => {
-            // Find all product items and add fade-in class after Livewire updates
-            const items = document.querySelectorAll('.product__filter .fade-in');
-            items.forEach(item => {
-                item.classList.remove('fade-in'); // Remove the class
-                void item.offsetWidth; // Trigger reflow to restart the animation
-                item.classList.add('fade-in'); // Add it back to trigger fade-in
+    {{-- Add JavaScript for fade-in effect --}}
+    <script>
+        document.addEventListener('livewire:load', function() {
+            Livewire.hook('message.processed', (message, component) => {
+                // Find all product items and add fade-in class after Livewire updates
+                const items = document.querySelectorAll('.product__filter .fade-in');
+                items.forEach(item => {
+                    item.classList.remove('fade-in'); // Remove the class
+                    void item.offsetWidth; // Trigger reflow to restart the animation
+                    item.classList.add('fade-in'); // Add it back to trigger fade-in
+                });
             });
         });
-    });
-</script>
+    </script>
+
+    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const stripe = Stripe('{{ env('STRIPE_KEY') }}');
+            const elements = stripe.elements();
+
+            // إعداد عنصر البطاقة مع خيارات لإزالة الرمز البريدي
+            const cardElement = elements.create('card', {
+                hidePostalCode: true // هذا الخيار يقوم بإزالة حقل الرمز البريدي
+            });
+
+            cardElement.mount('#card-element'); // تأكد من وجود العنصر هنا
+
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const {
+                    token,
+                    error
+                } = await stripe.createToken(cardElement);
+
+                if (error) {
+                    console.error('Error creating token:', error);
+                    alert(error.message); // عرض رسالة الخطأ للمستخدم
+                } else {
+                    console.log('Token created:', token.id);
+                    // إرسال الرمز إلى Livewire
+                    // Replace `this` with the form element or specific container if needed
+                    window.dispatchEvent(new CustomEvent('setToken', {
+                        detail: {
+                            token: token.id
+                        }, // Wrap the token in an object for easier access
+                        bubbles: true,
+                        composed: true
+                    }));
 
 
-    @livewireScripts()
+                }
+            });
+        });
+    </script> --}}
+    {{-- <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const stripe = Stripe('{{ env('STRIPE_KEY') }}'); // Use your Stripe key
+            const elements = stripe.elements();
+            const cardElement = elements.create('card', {
+                hidePostalCode: true
+            });
+            cardElement.mount('#card-element');
+
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const {
+                    token,
+                    error
+                } = await stripe.createToken(cardElement);
+
+                if (error) {
+                    console.error('Error creating token:', error);
+                    alert(error.message); // Show error message to the user
+                } else {
+                    console.log('Token created:', token.id);
+                    // Emit the token to the Livewire component
+                    Livewire.emit('setToken', token.id);
+                }
+            });
+        });
+    </script> --}}
+
+
+
+    @livewireScripts
+
 
 
 </body>

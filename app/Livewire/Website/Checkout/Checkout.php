@@ -29,16 +29,17 @@ class Checkout extends Component
     public $country;
     public $zip_code;
     public $payment_method;
+    public $paid = false;
     protected $rules = [
         'first_name' => 'required|string|max:255',
         'last_name' => 'required|string|max:255',
-        'phone' => 'required|regex:/^[0-9]{10,15}$/', // 10 to 15 digits
+        'phone' => 'required|regex:/^[0-9]{6,15}$/', // Between 6 to 15 digits
         'email' => 'required|email|max:255',
         'address' => 'required|string|max:500',
         'city' => 'required|string|max:255',
         'state' => 'required|string|max:255',
         'country' => 'required|string|max:255',
-        'zip_code' => 'required|regex:/^[0-9]{3}(-[0-9]{4})?$/', // 5 or 9 digit zip codes
+        'zip_code' => 'required|regex:/^[0-9]{3,6}$/', // Between 3 to 6 digits
         'payment_method' => 'required|in:check,paypal,visacard', // Ensures the value is one of the allowed payment methods
     ];
 
@@ -46,9 +47,11 @@ class Checkout extends Component
     {
         $this->validateOnly($propertyName);
     }
+
     public function mount()
     {
         $this->user_id = Auth::id();
+        $this->paid = session('payment_status', false); // Default to false if not set
 
         if (session()->has('checkout_data')) {
             $checkoutData = session()->get('checkout_data');
@@ -62,6 +65,8 @@ class Checkout extends Component
     public function placeOrder()
     {
         $this->validate();
+
+
         $order = Order::create([
             'user_id' => $this->user_id,
             'total_amount' => $this->totalPrice,
@@ -97,9 +102,16 @@ class Checkout extends Component
             'icon' => 'success',
         ]);
         Cart::where('user_id', $this->user_id)->delete();
+        session()->forget('payment_status');
 
         return redirect()->route('/');
     }
+
+    // #[On('paid')]
+    // public function checkPaid()
+    // {
+    //     $this->paid = true;
+    // }
     public function render()
     {
         return view('livewire.website.checkout.checkout')->layout('layout.website.app');

@@ -119,6 +119,8 @@ document.addEventListener('close-modal', () => {
 
     //  Order Modals (add more here as needed)
   closeModalById('completeOrder');
+  //  payment Modals (add more here as needed)
+  closeModalById('CreditModal');
 
 
     // Remove backdrop and clear modal-open class from body

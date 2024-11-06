@@ -78,8 +78,7 @@
             /* Rounded corners */
         }
     </style>
-    @livewireStyles <!-- Make sure this is present -->
-
+    @livewireStyles
 </head>
 
 <body>
@@ -105,17 +104,19 @@
     <div class="header">
         @livewire('website.header.header')
         @livewire('website.menu.begin')
-
         {{ $slot }}
         @livewire('website.footer.footer')
     </div>
 
 
     <!-- Search End -->
+    <!-- Load jQuery with defer -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Load Bootstrap with async -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous" async>
     </script>
+
     <!-- Js Plugins -->
     <script src="{{ asset('assets/website/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('assets/website/js/bootstrap.min.js') }}"></script>
@@ -127,7 +128,7 @@
     <script src="{{ asset('assets/website/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('assets/website/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('assets/website/js/main.js') }}"></script>
-    {{-- <script src="{{ asset('assets/admin/js/modals.js') }}"></script> --}}
+    <script src="{{ asset('assets/admin/js/modals.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -143,15 +144,6 @@
         });
     </script>
 
-
-    {{-- <script src="{{ asset('assets/admin/js/modals.js') }}"></script> --}}
-
-
-
-
-
-
-
     {{-- Add JavaScript for fade-in effect --}}
     <script>
         document.addEventListener('livewire:load', function() {
@@ -166,85 +158,63 @@
             });
         });
     </script>
-
-    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
+    <script src="https://js.stripe.com/v3/"></script>
     {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const stripe = Stripe('{{ env('STRIPE_KEY') }}');
+        window.onload = async () => {
+            const stripe = Stripe("{{ env('STRIPE_KEY') }}");
             const elements = stripe.elements();
+            const cardElement = elements.create('card', { hidePostalCode: true });
 
-            // إعداد عنصر البطاقة مع خيارات لإزالة الرمز البريدي
-            const cardElement = elements.create('card', {
-                hidePostalCode: true // هذا الخيار يقوم بإزالة حقل الرمز البريدي
-            });
+            // Mount cardElement only if #card-element exists
+            const cardElementDiv = document.getElementById('card-element');
+            if (cardElementDiv) {
+                cardElement.mount('#card-element');
+            } else {
+                console.error("#card-element not found.");
+            }
 
-            cardElement.mount('#card-element'); // تأكد من وجود العنصر هنا
-
-            const form = document.getElementById('payment-form');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const {
-                    token,
-                    error
-                } = await stripe.createToken(cardElement);
+            document.getElementById('submit-button').addEventListener('click', async () => {
+                const { error, token } = await stripe.createToken(cardElement);
 
                 if (error) {
-                    console.error('Error creating token:', error);
-                    alert(error.message); // عرض رسالة الخطأ للمستخدم
+                    document.getElementById('card-errors').textContent = error.message;
                 } else {
-                    console.log('Token created:', token.id);
-                    // إرسال الرمز إلى Livewire
-                    // Replace `this` with the form element or specific container if needed
-                    window.dispatchEvent(new CustomEvent('setToken', {
-                        detail: {
-                            token: token.id
-                        }, // Wrap the token in an object for easier access
-                        bubbles: true,
-                        composed: true
-                    }));
-
-
-                }
-            });
-        });
-    </script> --}}
-    {{-- <script>
-            document.addEventListener('DOMContentLoaded', function() {
-            const stripe = Stripe('{{ env('STRIPE_KEY') }}'); // Use your Stripe key
-            const elements = stripe.elements();
-            const cardElement = elements.create('card', {
-                hidePostalCode: true
-            });
-            cardElement.mount('#card-element');
-
-            const form = document.getElementById('payment-form');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-
-                const {
-                    token,
-                    error
-                } = await stripe.createToken(cardElement);
-
-                if (error) {
-                    console.error('Error creating token:', error);
-                    alert(error.message); // Show error message to the user
-                } else {
-                    console.log('Token created:', token.id);
-                    // Emit the token to the Livewire component
                     Livewire.emit('setToken', token.id);
+                    Livewire.emit('processPayment');
                 }
             });
-        });
+        };
     </script> --}}
+    <script>
+        document.addEventListener('close-modal', () => {
+            // Helper function to close a modal by ID
+            const closeModalById = (modalId) => {
+                const modalElement = document.getElementById(modalId);
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+            };
+
+            closeModalById('CreditModal');
 
 
+            // Remove backdrop and clear modal-open class from body
+            const modalBackdrop = document.querySelector('.modal-backdrop');
+            if (modalBackdrop) {
+                modalBackdrop.remove();
+            }
+            document.body.classList.remove('modal-open');
+        });
+
+        // Initialize all dropdowns
+        var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'));
+        var dropdownList = dropdownElementList.map(function(dropdownToggleEl) {
+            return new bootstrap.Dropdown(dropdownToggleEl);
+        });
+    </script>
 
     @livewireScripts
-
-
-
 </body>
 
 </html>

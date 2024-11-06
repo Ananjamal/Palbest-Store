@@ -154,7 +154,7 @@ class Products extends Component
                 'product_id' => $this->product->id,
                 'size' => $randomSize,
                 'color' => $randomColor,
-                'quantity' => $this->quantity, // Use the quantity from the class property
+                'quantity' => $this->quantity, 
             ]);
 
             $inventoryCheck->update([

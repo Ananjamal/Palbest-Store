@@ -207,36 +207,64 @@ class Shop extends Component
         $inventoryCheck = Inventory::where('product_id', $this->product->id)->first();
         if ($inventoryCheck->stock == 0) {
             $this->dispatch('swal:alert', [
-                'title' => 'Out of Stock',
+                'title' => 'Error',
                 'text' => 'This product is out of stock.',
                 'icon' => 'warning',
             ]);
             return;
         }
+        if ($this->quantity > $inventoryCheck->stock) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Insufficient Stock!',
+                'text' => "Sorry, we only have {$inventoryCheck->stock} items available for this product. Please adjust your order quantity.",
+                'icon' => 'error',
+            ]);
+            return;
+        }
 
+        // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
+
+        // Decode the size and color arrays, then select a random option from each
+        $sizes = json_decode($this->product->size, true);
+        $colors = json_decode($this->product->color, true);
+        $randomSize = $sizes[array_rand($sizes)];
+        $randomColor = $colors[array_rand($colors)];
+
+        // Check if the item already exists in the cart
         $existingItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $this->product->id)
             ->first();
 
         if ($existingItem) {
-            $existingItem->increment('quantity', $this->quantity);
-            $existingItem->save();
+            $this->dispatch('swal:alert', [
+                'title' => 'Item Already in Cart',
+                'text' => 'This item is already in your cart.',
+                'icon' => 'info',
+            ]);
         } else {
+            // Add the item to the cart with the random size and color
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $this->product->id,
-                'quantity' => $this->quantity,
+                'size' => $randomSize,
+                'color' => $randomColor,
+                'quantity' => $this->quantity, 
             ]);
+
+            $inventoryCheck->update([
+                'stock' => $inventoryCheck->stock - $this->quantity,
+            ]);
+
+            $this->dispatch('swal:alert', [
+                'title' => 'Success!',
+                'text' => 'Item added to your cart successfully.',
+                'icon' => 'success',
+            ]);
+            $this->mount();
+
+            $this->dispatch('refreshPage');
         }
-
-        $this->dispatch('swal:alert', [
-            'title' => 'Success!',
-            'text' => 'Item added to your cart successfully.',
-            'icon' => 'success',
-        ]);
-        $this->dispatch('refreshPage');
-
     }
 
     public function render()

@@ -57,5 +57,8 @@ Route::get('favorites', App\Livewire\Website\Favorite\Favorites::class)
 Route::get('orders', App\Livewire\Website\Orders\Orders::class)
     ->name('orders')
     ->middleware('auth');
+Route::get('credit-card-payment', App\Livewire\Payment::class)
+    ->name('credit.payment')
+    ->middleware('auth');
 
 require __DIR__ . '/auth.php';

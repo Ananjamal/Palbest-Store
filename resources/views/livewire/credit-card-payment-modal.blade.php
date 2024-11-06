@@ -146,7 +146,7 @@
     <h2 class="text-center mb-4">Enter Your Payment Details</h2>
 
     <!-- Include Stripe.js -->
-    <script src="https://js.stripe.com/v3/"></script>
+    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
 
     <form id="payment-form">
         @csrf
@@ -161,7 +161,7 @@
         </button>
     </form>
 
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const stripe = Stripe("{{ env('STRIPE_KEY') }}");
             const elements = stripe.elements();
@@ -184,5 +184,5 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 </div>

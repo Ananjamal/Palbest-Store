@@ -123,9 +123,6 @@ class Checkout extends Component
                 return;
             }
         }
-        
-        // dd($this->payment_method);
-
         $this->validate($this->rules);
 
         $order = Order::create([
@@ -146,7 +143,7 @@ class Checkout extends Component
         $this->order_id = $order->id;
         
         if ($this->payment_method == 'check') {
-            $payment_status = $this->payment_method;
+            $payment_status = 'un-paid';
         } else {
             $payment_status = 'paid';
         }

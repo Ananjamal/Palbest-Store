@@ -42,7 +42,9 @@
                                     <th>Total Price</th>
                                     <th>Details</th>
                                     <th>Status</th>
-                                    <th>Complete Order</th>
+                                    <th>Payment</th>
+
+                                    <th>Complete Order ?</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -56,7 +58,7 @@
                                             <button wire:click="orderDetails({{ $item->id }})"
                                                 data-bs-toggle="modal" data-bs-target="#orderDetails"
                                                 class="btn btn-info btn-sm">
-                                                <i class="fas fa-info-circle"></i> Details
+                                                <i class="fas fa-info-circle"></i> 
                                             </button>
                                         </td>
                                         <td>
@@ -69,6 +71,15 @@
                                             @elseif ($item->status == 'delivered')
                                                 <span class="badge bg-success"
                                                     style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">{{ $item->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">
+                                            @if ($item->payment->status == 'paid')
+                                                <span class="badge bg-success"
+                                                    style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">{{ $item->payment->status }}</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark"
+                                                    style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">{{ $item->payment->status }}</span>
                                             @endif
                                         </td>
                                         <td>

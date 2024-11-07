@@ -77,7 +77,7 @@
                                                         style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">{{ $item->payment->status }}</span>
                                                 @else
                                                     <span class="badge bg-warning text-dark"
-                                                        style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">Pending</span>
+                                                        style="font-size: 14px; padding: 8px 16px; border-radius: 5px;">{{ $item->payment->status }}</span>
                                                 @endif
                                             </td>
                                             <td class="align-middle">

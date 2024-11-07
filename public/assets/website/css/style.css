@@ -4315,3 +4315,21 @@ a:hover {
   border-color: #bdbdbd;
 }
 /*# sourceMappingURL=style.css.map */
+
+/* Add a 'disabled-state' class to disable elements */
+.disabled-state {
+    pointer-events: none; /* Disable all interactions */
+    opacity: 0.5; /* Make the elements look disabled */
+}
+
+/* Optionally, disable specific input elements */
+.disabled-state input,
+.disabled-state button {
+    pointer-events: none;
+    opacity: 0.5; /* Make the button and inputs look disabled */
+}
+
+/* You can also style labels with a disabled look */
+.disabled-state label {
+    color: #a7a2a2; /* Light gray color */
+}

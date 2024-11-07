@@ -1,19 +1,21 @@
 <?php
 namespace App\Livewire\Website\Checkout;
 
+use Stripe\Charge;
+use Stripe\Stripe;
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\Payment;
 use Livewire\Component;
 use App\Models\OrderItem;
 use App\Models\ShippingDetail;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Stripe\Stripe;
-use Stripe\Charge;
+use Illuminate\Support\Facades\Auth;
 
 class Checkout extends Component
 {
     protected $listeners = ['setToken', 'processPayment'];
+    public $isSaved = false; // Add this property
 
     public $cartItems = [];
     public $subTotal = 0;
@@ -35,6 +37,8 @@ class Checkout extends Component
     public $method_check;
     public $token; // Token set from the frontend
     public $order_id;
+    public $payment_type;
+    public $username;
 
     protected $rules = [
         'first_name' => 'required|string|max:255',
@@ -46,13 +50,28 @@ class Checkout extends Component
         'state' => 'required|string|max:255',
         'country' => 'required|string|max:255',
         'zip_code' => 'required|regex:/^[0-9]{3,6}$/',
-        'payment_method' => 'required|in:check,paypal,creditcard',
+        // 'payment_method' => 'required|in:check,paypal,creditcard',
     ];
 
     public function mount()
     {
         $this->user_id = Auth::id();
+        $this->username = Auth::user()->name;
         $this->paid = session('payment_status', false);
+        $this->payment_method = session('payment_type');
+        if (session()->has('checkout_form_data')) {
+            $formData = session('checkout_form_data');
+            $this->first_name = $formData['first_name'];
+            $this->last_name = $formData['last_name'];
+            $this->phone = $formData['phone'];
+            $this->email = $formData['email'];
+            $this->address = $formData['address'];
+            $this->city = $formData['city'];
+            $this->state = $formData['state'];
+            $this->country = $formData['country'];
+            $this->zip_code = $formData['zip_code'];
+            $this->isSaved = true; // Enable payment methods if data already exists in the session
+        }
 
         if (session()->has('checkout_data')) {
             $checkoutData = session()->get('checkout_data');
@@ -63,6 +82,29 @@ class Checkout extends Component
             $this->totalPrice = $checkoutData['totalPrice'];
         }
     }
+    public function saveCheckoutData()
+    {
+        // Validate fields before saving to session
+        $this->validate();
+
+        // Save data to session
+        session([
+            'checkout_form_data' => [
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'address' => $this->address,
+                'city' => $this->city,
+                'state' => $this->state,
+                'country' => $this->country,
+                'zip_code' => $this->zip_code,
+            ],
+        ]);
+        $this->isSaved = true; // Set to true to enable payment section
+
+        session()->flash('message', 'Checkout information saved successfully!');
+    }
 
     public function setToken($token)
     {
@@ -71,17 +113,20 @@ class Checkout extends Component
 
     public function placeOrder()
     {
-        if(!$this->paid) {
-            $this->dispatch('swal:alert', [
-                'title' => 'Pending Payment',
-                'text' => 'Please complete the payment to proceed with your order.',
-                'icon' => 'info',
-            ]);
-            return;
+        if($this->payment_method !== 'check'){
+            if (!$this->paid) {
+                $this->dispatch('swal:alert', [
+                    'title' => 'Pending Payment',
+                    'text' => 'Please complete the payment to proceed with your order.',
+                    'icon' => 'info',
+                ]);
+                return;
+            }
         }
         
+        // dd($this->payment_method);
+
         $this->validate($this->rules);
-        $this->method_check = $this->payment_method;
 
         $order = Order::create([
             'user_id' => $this->user_id,
@@ -99,7 +144,18 @@ class Checkout extends Component
             ]);
         }
         $this->order_id = $order->id;
-
+        
+        if ($this->payment_method == 'check') {
+            $payment_status = $this->payment_method;
+        } else {
+            $payment_status = 'paid';
+        }
+        $payment = Payment::create([
+            'order_id' => $order->id,
+            'amount' => $this->totalPrice,
+            'method' => $this->payment_method,
+            'status' => $payment_status,
+        ]);
         ShippingDetail::create([
             'order_id' => $order->id,
             'shipping_first_name' => $this->first_name,
@@ -121,7 +177,7 @@ class Checkout extends Component
         ]);
 
         Cart::where('user_id', $this->user_id)->delete();
-        session()->forget('payment_status');
+        session()->forget(['payment_status', 'payment_type', 'checkout_form_data', 'checkout_data']);
 
         return redirect()->route('/');
     }
@@ -142,14 +198,13 @@ class Checkout extends Component
                 'currency' => 'usd',
             ]);
 
-            $order = Order::where('user_id', $this->user_id)->first();
-            $order_id = $order->id; // Get the order ID
+            // Get the order ID
             // Get last 4 digits of the card number from the token (or previously stored)
             $cardLast4 = $this->getLast4Digits($this->token);
 
             // Check if a charge with the same amount, description, and card last 4 digits exists
             foreach ($existingCharges->data as $existingCharge) {
-                if ($existingCharge->amount === $this->totalPrice * 100 && $existingCharge->description === 'Payment for order #' . $order_id && $existingCharge->payment_method_details->card->last4 === $cardLast4) {
+                if ($existingCharge->amount === $this->totalPrice * 100 && ($existingCharge->description === 'Payment for order #' . $existingCharge->payment_method_details->card->last4) === $cardLast4) {
                     $this->dispatch('swal:alert', [
                         'title' => 'Info!',
                         'text' => 'A similar charge already exists for this card.',
@@ -164,21 +219,20 @@ class Checkout extends Component
                 'amount' => $this->totalPrice * 100, // Convert dollars to cents
                 'currency' => 'usd',
                 'source' => $this->token,
-                'description' => 'Payment for order #' . $order_id, // Use $order_id here
+                'description' => 'Payment for username: ' . $this->username, // Use $order_id here
             ]);
 
             if ($charge->status === 'succeeded') {
                 session(['payment_status' => true]); // Store payment status in session
-                $this->method_check = $this->payment_method; // Update method_check after success
+
+                session(['payment_type' => $this->payment_method]); // Store payment status in session
 
                 $this->dispatch('swal:alert', [
                     'title' => 'Success!',
                     'text' => 'Payment processed successfully.',
                     'icon' => 'success',
                 ]);
-                $this->render();
-                // return redirect()->route('checkout');
-
+                return redirect()->route('checkout');
             } else {
                 throw new \Exception('Payment not successful. Please try again.');
             }

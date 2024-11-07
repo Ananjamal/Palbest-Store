@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Payment;
 use App\Models\OrderItem;
 use App\Models\ShippingDetail;
 use Illuminate\Database\Eloquent\Model;
@@ -26,5 +27,9 @@ class Order extends Model
     public function shippingDetail()
     {
         return $this->hasOne(ShippingDetail::class);
+    }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }

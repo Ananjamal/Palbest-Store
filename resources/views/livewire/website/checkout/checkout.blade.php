@@ -103,6 +103,17 @@
                                 </div>
                             </div>
                         </div>
+                        <button wire:click="saveCheckoutData" class="btn btn-primary mt-4">Save
+                            <span wire:loading wire:target="saveCheckoutData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+                        </button>
+
+                        <!-- Success Message -->
+                        @if (session()->has('message'))
+                            <div class="alert alert-success mt-2">
+                                {{ session('message') }}
+                            </div>
+                        @endif
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="p-4 mb-4 checkout__order card">
@@ -142,8 +153,9 @@
                             </ul>
 
 
-                            {{--  --}}
-                            <div>
+                            <div class="{{ !$isSaved ? 'disabled-state' : '' }}">
+                                <h4 class="payment-title">Choose Your Payment Method</h4> <!-- Title added here -->
+                            
                                 @if (!$paid)
                                     <div class="checkout__input__checkbox">
                                         <label for="payment_check">
@@ -172,31 +184,27 @@
                                     </div>
                                 @else
                                     <div class="alert alert-success mt-4 p-3 rounded border-success">
-                                        <h4 class="alert-heading"><i class="bi bi-check-circle-fill"></i> Payment
-                                            Successful!</h4>
-                                        <p class="mb-1"><strong>Payment Method:</strong> {{ $method_check }}</p>
+                                        <h4 class="alert-heading"><i class="bi bi-check-circle-fill"></i> Payment Successful!</h4>
+                                        <p class="mb-1"><strong>Payment Method:</strong> {{ $payment_method }}</p>
                                         <p class="mb-1"><strong>Payment Status:</strong> Paid successfully</p>
                                         <hr>
-                                        <p class="mb-0">Thank you for your payment. Your transaction was successful!
-                                        </p>
+                                        <p class="mb-0">Thank you for your payment. Your transaction was successful!</p>
                                     </div>
                                 @endif
-
+                            
                                 @error('payment_method')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
-
-                                <button wire:click="placeOrder" class="btn btn-primary btn-block"
-                                    wire:loading.attr="disabled">
-
+                            
+                                <!-- Place Order Button -->
+                                <button wire:click="placeOrder" class="btn btn-primary btn-block">
                                     PLACE ORDER
-                                    <span wire:loading wire:target="placeOrder"
-                                        class="spinner-border spinner-border-sm" role="status"
-                                        aria-hidden="true"></span>
+                                    <span wire:loading wire:target="placeOrder" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                 </button>
-
-
                             </div>
+                            
+
+
 
                         </div>
 

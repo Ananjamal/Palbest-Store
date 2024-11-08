@@ -4,18 +4,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\GoogleController;
-use App\Livewire\Payment;
 
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-Route::get('/payment/success', Payment::class)
-    ->name('payment.success')
-    ->middleware('auth');
 
-Route::get('/payment/cancel', Payment::class)
-    ->name('payment.cancel')
-    ->middleware('auth');
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -57,8 +50,6 @@ Route::get('favorites', App\Livewire\Website\Favorite\Favorites::class)
 Route::get('orders', App\Livewire\Website\Orders\Orders::class)
     ->name('orders')
     ->middleware('auth');
-Route::get('credit-card-payment', App\Livewire\Payment::class)
-    ->name('credit.payment')
-    ->middleware('auth');
+
 
 require __DIR__ . '/auth.php';

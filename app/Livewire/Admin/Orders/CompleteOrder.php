@@ -22,8 +22,8 @@ class CompleteOrder extends Component
         } elseif ($this->order->status === 'canceled') {
             $message = 'The order cannot be completed because it has already been marked as canceled.';
             $this->dispatch('errorflash', $message);
-        } elseif ($this->order->status === 'canceled' || $this->order->payment->status === 'un-paid') {
-            $message = 'The order cannot be completed because it has already been marked as canceled or remains unpaid.';
+        } elseif ( $this->order->payment->status === 'un-paid') {
+            $message = 'The order cannot be completed because it remains unpaid.';
             $this->dispatch('errorflash', $message);
         } else {
             $this->order->status = 'delivered';

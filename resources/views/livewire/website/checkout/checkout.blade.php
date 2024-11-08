@@ -104,7 +104,8 @@
                             </div>
                         </div>
                         <button wire:click="saveCheckoutData" class="btn btn-primary mt-4">Save
-                            <span wire:loading wire:target="saveCheckoutData" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            <span wire:loading wire:target="saveCheckoutData" class="spinner-border spinner-border-sm"
+                                role="status" aria-hidden="true"></span>
 
                         </button>
 
@@ -155,7 +156,7 @@
 
                             <div class="{{ !$isSaved ? 'disabled-state' : '' }}">
                                 <h4 class="payment-title">Choose Your Payment Method</h4> <!-- Title added here -->
-                            
+
                                 @if (!$paid)
                                     <div class="checkout__input__checkbox">
                                         <label for="payment_check">
@@ -174,59 +175,38 @@
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
-                                    <div class="checkout__input__checkbox">
-                                        <label for="payment_paypal">
-                                            Paypal
-                                            <input type="radio" id="payment_paypal" wire:click='setPaymentMethod'
-                                                wire:model="payment_method" value="paypal">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
                                 @else
                                     <div class="alert alert-success mt-4 p-3 rounded border-success">
-                                        <h4 class="alert-heading"><i class="bi bi-check-circle-fill"></i> Payment Successful!</h4>
+                                        <h4 class="alert-heading"><i class="bi bi-check-circle-fill"></i> Payment
+                                            Successful!</h4>
                                         <p class="mb-1"><strong>Payment Method:</strong> {{ $payment_method }}</p>
                                         <p class="mb-1"><strong>Payment Status:</strong> Paid successfully</p>
                                         <hr>
-                                        <p class="mb-0">Thank you for your payment. Your transaction was successful!</p>
+                                        <p class="mb-0">Thank you for your payment. Your transaction was successful!
+                                        </p>
                                     </div>
                                 @endif
-                            
+
                                 @error('payment_method')
                                     <span class="error text-danger">{{ $message }}</span>
                                 @enderror
-                            
+
                                 <!-- Place Order Button -->
                                 <button wire:click="placeOrder" class="btn btn-primary btn-block">
                                     PLACE ORDER
-                                    <span wire:loading wire:target="placeOrder" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    <span wire:loading wire:target="placeOrder"
+                                        class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
                                 </button>
                             </div>
-                            
+
 
 
 
                         </div>
 
                     </div>
-                    {{-- <div wire:ignore.self class="modal fade" id="PaypalModal" tabindex="-1"
-                        aria-labelledby="searchModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="searchModalLabel">Paypal </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    @livewire('pay-pal-payment-modal', ['totalPrice' => $totalPrice])
 
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div> --}}
                     <div wire:ignore class="modal fade" id="CreditModal" tabindex="-1"
                         aria-labelledby="creditModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
@@ -237,18 +217,13 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    {{-- @livewire('credit-card-payment-modal', ['totalPrice' => $totalPrice]) --}}
                                     <div class="container mt-4">
                                         <h2 class="text-center mb-4">Enter Your Payment Details</h2>
-
-                                        <!-- Include Stripe.js -->
-
                                         <form id="payment-form">
                                             @csrf
                                             <div class="mb-3">
                                                 <label for="card-element" class="form-label">Card Number</label>
                                                 <div id="card-element" class="form-control"></div>
-                                                <!-- Stripe Card Element -->
                                                 <div id="card-errors" role="alert" class="text-danger mt-2">
                                                 </div>
                                             </div>

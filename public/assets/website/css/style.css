@@ -4333,3 +4333,270 @@ a:hover {
 .disabled-state label {
     color: #a7a2a2; /* Light gray color */
 }
+.user-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.rating-label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.rating-stars i {
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+/* Button normal state */
+.btn-submit-rating {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green background */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Button hover state */
+.btn-submit-rating:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+}
+
+/* Button active state */
+.btn-submit-rating:active {
+    background-color: #3e8e41; /* Even darker green on click */
+}
+
+.rating-stars i:hover {
+    color: #ebd13f; /* Change the color to gold when hovered */
+}
+/* Responsive styles */
+@media (max-width: 600px) {
+    .user-rating {
+        max-width: 100%;
+    }
+
+    .rating-label {
+        font-size: 16px;
+    }
+
+    .rating-stars i {
+        font-size: 22px;
+    }
+
+    .btn-submit-rating {
+        font-size: 14px;
+    }
+}  
+/* General card styling */
+.custom-card {
+    border: none;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Heading */
+.custom-card-heading {
+    background-color: #007bff;
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Card Body */
+.custom-card-body {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Category and Price List Styling */
+.shop__sidebar__categories ul,
+.shop__sidebar__price ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* List item styling for Categories and Price */
+.shop__sidebar__categories li,
+.shop__sidebar__price li {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hover effect for list items */
+.shop__sidebar__categories li:hover,
+.shop__sidebar__price li:hover {
+    background-color: #e9f5ff;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+/* Anchor link styling within list items */
+.shop__sidebar__categories a,
+.shop__sidebar__price a {
+    color: #333333;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.shop__sidebar__categories a:hover,
+.shop__sidebar__price a:hover {
+    color: #007bff;
+}
+
+/* Styling for Sizes and Colors Labels */
+.custom-label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #333333;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.custom-label:hover {
+    background-color: #e9f5ff;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.custom-label input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* Nice Scroll for long lists */
+.nice-scroll {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.nice-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.nice-scroll::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .custom-card {
+        font-size: 0.9rem;
+    }
+
+    .custom-card-heading {
+        font-size: 1rem;
+    }
+}
+
+/* Sidebar Search Section */
+.sidebar-search {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Form Styling */
+.sidebar-search form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+/* Search Input Styling */
+.sidebar-search input[type="text"] {
+    width: 90%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+/* Focus Effect on Search Input */
+.sidebar-search input[type="text"]:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Search Button Styling */
+.sidebar-search button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+/* Button Hover Effect */
+.sidebar-search button:hover {
+    background-color: #0056b3;
+}
+
+/* Icon inside the button */
+.sidebar-search button .search-icon {
+    font-size: 1.2rem; /* Adjust the size of the search icon */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .sidebar-search input[type="text"] {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+    }
+
+    .sidebar-search button {
+        padding: 8px;
+    }
+}

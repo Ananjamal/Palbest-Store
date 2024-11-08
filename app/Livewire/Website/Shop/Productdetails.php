@@ -3,6 +3,7 @@
 namespace App\Livewire\Website\Shop;
 
 use App\Models\Cart;
+use App\Models\Review;
 use App\Models\Product;
 use Livewire\Component;
 use App\Models\CartItem;
@@ -17,13 +18,100 @@ class Productdetails extends Component
     public $quantity = 1;
     public $size = null;
     public $color = null;
+    public $rating;
+    public $review_count;
+    public $userRating = 0; // to hold the user's rating
+    public $hoveredRating = 0;
 
     public function mount($id)
     {
         $this->product = Product::findOrFail($id);
         $this->user_id = auth()->id();
+        $reviews = Review::where('product_id', $id)->get();
+        $this->rating = $this->calculateStars($reviews);
+        $this->review_count = $reviews->count();
     }
 
+    private function calculateStars($reviews)
+    {
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $average = $reviews->avg('rating');
+
+        // Round the average rating to one decimal place
+        return round($average, 1);
+    }
+    public function setUserRating($rating)
+    {
+        $this->userRating = $rating;
+    }
+
+    public function submitRating()
+    {
+        // Validate user input
+        if (!$this->user_id) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'Please login first.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
+
+        if (!$this->userRating || $this->userRating < 1 || $this->userRating > 5) {
+            $this->dispatch('swal:alert', [
+                'title' => 'Error',
+                'text' => 'Please provide a valid rating between 1 and 5.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
+        // Check if the user has already rated the product with the same rating
+        $existingReview = Review::where('user_id', $this->user_id)
+            ->where('product_id', $this->product->id)
+            ->where('rating', $this->userRating)
+            ->first();
+
+        if ($existingReview) {
+            // Inform the user that they have already rated the product with the same rating
+            $this->dispatch('swal:alert', [
+                'title' => 'Warning',
+                'text' => 'You have already rated this product with the same rating.',
+                'icon' => 'warning',
+            ]);
+            return;
+        }
+
+        // Save the rating in the database
+        Review::updateOrCreate([
+            'user_id' => $this->user_id,
+            'product_id' => $this->product->id,
+            'rating' => $this->userRating,
+        ]);
+
+        // Recalculate the average rating
+        // Success alert
+        $this->dispatch('swal:alert', [
+            'title' => 'Success!',
+            'text' => 'Your rating has been submitted.',
+            'icon' => 'success',
+        ]);
+        // Recalculate the average rating
+        $reviews = Review::where('product_id', $this->product->id)->get();
+        $this->rating = $this->calculateStars($reviews);
+        $this->review_count = $reviews->count();
+    }
+    public function setHoveredRating($rating)
+    {
+        $this->hoveredRating = $rating;
+    }
+
+    public function resetHoveredRating()
+    {
+        $this->hoveredRating = 0;
+    }
     public function addToCart()
     {
         // If user is not logged in

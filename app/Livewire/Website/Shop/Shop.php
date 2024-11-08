@@ -36,7 +36,7 @@ class Shop extends Component
     public function loadProducts()
     {
         // Start the query
-        $query = Product::query();
+        $query = Product::with('reviews');
 
         // Apply search term filter if present
         if ($this->searchTerm) {
@@ -62,7 +62,7 @@ class Shop extends Component
 
         // Get products and add stars and favorites
         $this->products = $query->get()->map(function ($product) {
-            $product->stars = $this->calculateStars($product->rating);
+            $product->stars = $this->calculateStars($product->reviews);
             $product->isFavorited = $this->checkIfInFavorite($product->id);
             return $product;
         });
@@ -89,35 +89,35 @@ class Shop extends Component
     {
         $this->resetFilters('category');
         $this->selectedCategory = $categoryId;
-        $this->loadProducts();
+        $this->mount();
     }
 
     public function selectSize($size)
     {
         $this->resetFilters('size');
         $this->selectedSize = $size;
-        $this->loadProducts();
+        $this->mount();
     }
 
     public function selectColor($color)
     {
         $this->resetFilters('color');
         $this->selectedColor = $color;
-        $this->loadProducts();
+        $this->mount();
     }
 
     public function selectPriceRange($priceRange)
     {
         $this->resetFilters('price');
         $this->selectedPriceRange = $priceRange;
-        $this->loadProducts();
+        $this->mount();
     }
 
     public function setSearchTerm($searchTerm)
     {
         $this->resetFilters('search');
         $this->searchTerm = $searchTerm;
-        $this->loadProducts();
+        $this->mount();
     }
 
     private function resetFilters($except = null)
@@ -148,9 +148,16 @@ class Shop extends Component
             ->exists();
     }
 
-    private function calculateStars($rating)
+    private function calculateStars($reviews)
     {
-        return round($rating);
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $average = $reviews->avg('rating');
+
+        // Round the average rating to one decimal place
+        return round($average, 1);
     }
 
     public function addToFavorite($id)

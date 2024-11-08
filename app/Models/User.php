@@ -24,6 +24,10 @@ class User extends Authenticatable
         'image'
     ];
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

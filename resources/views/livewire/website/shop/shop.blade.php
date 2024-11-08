@@ -21,107 +21,99 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="shop__sidebar">
-                            <div class="shop__sidebar__search">
+                            <div class="sidebar-search">
                                 <form wire:submit.prevent="loadProducts">
                                     <input type="text" wire:model.lazy="searchTerm"
-                                        wire:input="setSearchTerm($event.target.value)"
-                                        placeholder="Search products...">
-                                    <button type="submit"><span class="icon_search"></span></button>
+                                           wire:input="setSearchTerm($event.target.value)"
+                                           placeholder="Search products...">
+                                    <button type="submit">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </button>
                                 </form>
                             </div>
+                            
                             <div class="shop__sidebar__accordion">
                                 <div class="accordion" id="accordionExample">
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                    <div class="card custom-card">
+                                        <div class="card-heading custom-card-heading">Categories</div>
+                                        <div class="card-body custom-card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    @foreach ($categories as $category)
+                                                        <li>
+                                                            <a href="#"
+                                                                wire:click.prevent="setCategory({{ $category->id }})">
+                                                                {{ $category->name }} ({{ $category->products_count }})
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="shop__sidebar__categories">
-                                                    <ul class="nice-scroll">
-                                                            @foreach ($categories as $category)
-                                                                <li>
-                                                                    <a href="#" wire:click.prevent="setCategory({{ $category->id }})">
-                                                                        {{ $category->name }} ({{ $category->products_count }}) <!-- Display product count -->
-                                                                    </a>
-                                                                </li>
-                                                            @endforeach
-                                                        </ul>
+                                    </div>
 
-                                                    </ul>
-                                                </div>
+                                    <div class="card custom-card">
+                                        <div class="card-heading custom-card-heading">Filter Price</div>
+                                        <div class="card-body custom-card-body">
+                                            <div class="shop__sidebar__price">
+                                                <ul>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('0-50')">$0 - $50</a>
+                                                    </li>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('50-100')">$50 -
+                                                            $100</a></li>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('100-150')">$100 -
+                                                            $150</a></li>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('150-200')">$150 -
+                                                            $200</a></li>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('200-250')">$200 -
+                                                            $250</a></li>
+                                                    <li><a href="#"
+                                                            wire:click.prevent="selectPriceRange('250+')">$250+</a></li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                        </div>
-                                        <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="shop__sidebar__price">
-                                                    <ul>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('0-50')">$0 - $50</a>
-                                                        </li>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('50-100')">$50 -
-                                                                $100</a></li>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('100-150')">$100 -
-                                                                $150</a></li>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('150-200')">$150 -
-                                                                $200</a></li>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('200-250')">$200 -
-                                                                $250</a></li>
-                                                        <li><a href="#"
-                                                                wire:click.prevent="selectPriceRange('250+')">$250+</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
+
+                                    <div class="card custom-card">
+                                        <div class="card-heading custom-card-heading">Sizes</div>
+                                        <div class="card-body custom-card-body">
+                                            <div class="shop__sidebar__sizes">
+                                                @foreach ($sizes as $size)
+                                                    <label class="custom-label">
+                                                        <input type="radio" wire:model="selectedSize"
+                                                            value="{{ $size }}"
+                                                            wire:click="selectSize('{{ $size }}')">
+                                                        {{ strtoupper($size) }}
+                                                    </label>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseFive">Sizes</a>
+
+                                    <div class="card custom-card" style="margin-bottom: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                                        <div class="card-heading custom-card-heading" style="background-color: #f5f5f5; padding: 10px; font-size: 1.2rem; font-weight: bold; border-bottom: 1px solid #ddd;">
+                                            Colors
                                         </div>
-                                        <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="shop__sidebar__sizes">
-                                                    @foreach ($sizes as $size)
-                                                        <label>
-                                                            <input type="radio" wire:model="selectedSize"
-                                                                value="{{ $size }}"
-                                                                wire:click="selectSize('{{ $size }}')">
-                                                            {{ strtoupper($size) }}
-                                                        </label>
-                                                    @endforeach
-                                                </div>
+                                        <div class="card-body custom-card-body" style="padding: 20px;">
+                                            <div class="shop__sidebar__colors" style="display: flex; flex-wrap: wrap;">
+                                                @foreach ($colors as $color)
+                                                    <label class="custom-label" style="display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; margin-bottom: 10px; padding: 10px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; width: 80px; height: 40px; color: white; font-size: 0.9rem; background-color: {{ $color }};">
+                                                        <input type="radio" wire:model="selectedColor"
+                                                               value="{{ $color }}"
+                                                               wire:click="selectColor('{{ $color }}')" style="display: none;">
+                                                        {{ ucfirst($color) }}
+                                                    </label>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-heading">
-                                            <a data-toggle="collapse" data-target="#collapseSix">Colors</a>
-                                        </div>
-                                        <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <div class="shop__sidebar__colors">
-                                                    @foreach ($colors as $color)
-                                                        <label>
-                                                            <input type="radio" wire:model="selectedColor"
-                                                                value="{{ $color }}"
-                                                                wire:click="selectColor('{{ $color }}')">
-                                                            {{ ucfirst($color) }}
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
+
 
                                 </div>
                             </div>
@@ -202,8 +194,7 @@
                                                     </div>
                                                 @endif
 
-                                                <button wire:click='addToCart({{ $item->id }})'
-                                                    class="add-cart">+
+                                                <button wire:click='addToCart({{ $item->id }})' class="add-cart">+
                                                     Add To Cart</button>
                                                 <div class="rating">
                                                     @for ($i = 1; $i <= 5; $i++)

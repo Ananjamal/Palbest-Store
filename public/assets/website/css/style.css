@@ -2095,7 +2095,7 @@ ol {
 /*---------------------
   Footer
 -----------------------*/
-
+/*
 .footer {
 	background: #111111;
 	padding-top: 70px;
@@ -2207,6 +2207,124 @@ ol {
 
 .footer__copyright__text p a {
 	color: #e53637;
+} */
+.footer {
+    background-color: #000;
+    padding: 40px 0;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+}
+
+.footer__logo img {
+    max-width: 150px;
+}
+
+.footer__about-text {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-top: 15px;
+}
+
+.footer__widget {
+    padding-left: 20px;
+}
+
+.footer__heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.footer__list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.footer__list li {
+    margin-bottom: 10px;
+}
+
+.footer__list a {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer__list a:hover {
+    color: #fff;
+}
+
+.footer__newsletter {
+    margin-top: 20px;
+}
+
+.footer__newsletter-text {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.footer__newsletter-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #fff;
+    font-size: 14px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+.footer__newsletter-input:focus {
+    border-color: #f8a261;
+    outline: none;
+}
+
+.footer__newsletter-button {
+    background-color: #f8a261;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.footer__newsletter-button:hover {
+    background-color: #f57c00;
+}
+
+.footer__copyright {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.footer__copyright a {
+    color: #f8a261;
+    text-decoration: none;
+}
+
+.footer__copyright i {
+    color: #f8a261;
+}
+
+@media (max-width: 767px) {
+    .footer__logo img {
+        max-width: 120px;
+    }
+
+    .footer__heading {
+        font-size: 16px;
+    }
+
+    .footer__newsletter-input {
+        font-size: 13px;
+    }
+
+    .footer__newsletter-button {
+        font-size: 14px;
+    }
 }
 
 /*---------------------
@@ -4603,51 +4721,51 @@ a:hover {
     }
 }
  /* Error message styling */
- .contact-error {
-    font-size: 0.875rem;
-    color: #dc3545;
-    margin-top: 0.25rem;
-}
+    .contact-error {
+        font-size: 0.875rem;
+        color: #dc3545;
+        margin-top: 0.25rem;
+    }
 
-/* Button styling */
-.contact-submit-btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+    /* Button styling */
+    .contact-submit-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        border: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
 
-.contact-submit-btn:hover {
-    background-color: #0056b3;
-}
+    .contact-submit-btn:hover {
+        background-color: #0056b3;
+    }
 
-/* Spinner visibility */
-.contact-submit-btn .loading-spinner {
-    margin-left: 10px;
-    vertical-align: middle;
-}
+    /* Spinner visibility */
+    .contact-submit-btn .loading-spinner {
+        margin-left: 10px;
+        vertical-align: middle;
+    }
 
-/* Breadcrumb styling */
-.breadcrumb-section {
-    padding: 20px 0;
-    background-color: #f8f9fa;
-}
+    /* Breadcrumb styling */
+    .breadcrumb-section {
+        padding: 20px 0;
+        background-color: #f8f9fa;
+    }
 
-.breadcrumb-text {
-    font-size: 1.25rem;
-    font-weight: 600;
-}
+    .breadcrumb-text {
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
 
-.breadcrumb-links a {
-    color: #007bff;
-    text-decoration: none;
-}
+    .breadcrumb-links a {
+        color: #007bff;
+        text-decoration: none;
+    }
 
-.breadcrumb-links a:hover {
-    text-decoration: underline;
-}
+    .breadcrumb-links a:hover {
+        text-decoration: underline;
+    }

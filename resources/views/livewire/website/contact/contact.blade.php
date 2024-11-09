@@ -47,6 +47,7 @@
                                         @error('name')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
+                                        
                                     </div>
                                     <div class="col-lg-6">
                                         <input type="email" placeholder="Email" wire:model='email'>
@@ -54,12 +55,14 @@
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+
                                     <div class="col-lg-12">
                                         <textarea placeholder="Message" wire:model='message'></textarea>
                                         @error('message')
                                             <span class="error text-danger">{{ $message }}</span>
                                         @enderror
                                         <br>
+                                        <hr>
                                         {{-- <button type="submit" class="site-btn">Send Message</button> --}}
                                         <button wire:click="sendMessage" class="site-btn">
                                             Send Message

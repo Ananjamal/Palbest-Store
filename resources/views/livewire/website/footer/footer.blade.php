@@ -1,45 +1,52 @@
-    {{-- Success is as dangerous as failure. --}}
-    <div>
-    <footer class="footer">
+<div>
+    <footer class="py-5 text-white bg-black footer">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="row justify-content-between">
+                <!-- About Section -->
+                <div class="mb-4 col-lg-3 col-md-6">
                     <div class="footer__about">
-                        <div class="footer__logo">
-                            <a href="#"><img src="{{ asset('assets/website/img/footer-logo.png') }}"
-                                    alt=""></a>
+                        <div class="mb-3 footer__logo">
+                            <a href="#"><img src="{{ asset('assets/website/img/footer-logo.png') }}" alt="PalBest Logo" class="img-fluid"></a>
                         </div>
-                        <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="{{ asset('assets/website/img/payment.png') }}" alt=""></a>
+                        <p class="footer__about-text">Your style, our passion! PalBest brings you the finest clothing designed to make you feel confident, comfortable, and unique.</p>
+                        <a href="#"><img src="{{ asset('assets/website/img/payment.png') }}" alt="Payment Methods" class="mt-3 img-fluid"></a>
                     </div>
                 </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+
+                <!-- Shopping Section -->
+                <div class="mb-4 col-lg-2 col-md-3">
                     <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Clothing Store</a></li>
-                            <li><a href="#">Trending Shoes</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
+                        <h6 class="footer__heading">Shopping</h6>
+                        <ul class="footer__list">
+                            <li><a href="{{route('shop')}}">New Arrivals</a></li>
+                            <li><a href="{{route('shop')}}">Trending Styles</a></li>
+                            <li><a href="{{route('shop')}}">Accessories</a></li>
+                            <li><a href="{{route('shop')}}">Exclusive Offers</a></li>
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+
+                <!-- Newsletter Section -->
+                <div class="mb-4 col-lg-3 col-md-6">
                     <div class="footer__widget">
-                        <h6>NewLetter</h6>
-                        <div class="footer__newslatter">
-                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                            <form action="#">
-                                <input type="text" placeholder="Your email">
-                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                        <h6 class="footer__heading">Newsletter</h6>
+                        <div class="footer__newsletter">
+                            <p class="footer__newsletter-text">Stay ahead of the trends! Get updates on new collections, special offers, and exclusive deals.</p>
+                            <form class="newsletter-form">
+                                <input type="text" wire:model='message' class="footer__newsletter-input" placeholder="Enter your message">
+                                <button wire:click='sendMessage' class="footer__newsletter-button"><span class="icon_mail_alt"></span></button>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
 
+            <!-- Footer Copyright -->
+            <div class="mt-4 row justify-content-center">
+                <div class="text-center col-lg-12">
+                    <div class="footer__copyright">
+                        <p>&copy; {{now()->year}} PalBest Clothing. All rights reserved. <i class="icon_heart"></i> by <a href="{{route('/')}}">PalBest</a></p>
+                    </div>
                 </div>
             </div>
         </div>

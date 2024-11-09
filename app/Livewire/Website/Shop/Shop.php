@@ -256,7 +256,7 @@ class Shop extends Component
                 'product_id' => $this->product->id,
                 'size' => $randomSize,
                 'color' => $randomColor,
-                'quantity' => $this->quantity, 
+                'quantity' => $this->quantity,
             ]);
 
             $inventoryCheck->update([

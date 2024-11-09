@@ -24,23 +24,24 @@ class Products extends Component
     public function mount()
     {
         $this->user_id = Auth::id();
-
-        $this->newArrivals = Product::orderBy('created_at', 'desc')
+        $this->newArrivals = Product::with('reviews')
+            ->orderBy('created_at', 'desc')
             ->take(6)
             ->get()
             ->map(function ($product) {
-                $product->stars = $this->calculateStars($product->rating);
+                $product->stars = $this->calculateStars($product->reviews);
                 $product->isFavorited = $this->checkIfInFavorite($product->id); // Check if the product is in favorites
                 return $product;
             });
 
         $newArrivalIds = $this->newArrivals->pluck('id')->toArray();
 
-        $this->hotSales = Product::whereNotIn('id', $newArrivalIds)
+        $this->hotSales = Product::with('reviews')
+            ->whereNotIn('id', $newArrivalIds)
             ->take(4)
             ->get()
             ->map(function ($product) {
-                $product->stars = $this->calculateStars($product->rating);
+                $product->stars = $this->calculateStars($product->reviews);
                 $product->isFavorited = $this->checkIfInFavorite($product->id);
                 return $product;
             });
@@ -53,9 +54,16 @@ class Products extends Component
             ->exists();
     }
 
-    private function calculateStars($rating)
+    private function calculateStars($reviews)
     {
-        return round($rating);
+        if ($reviews->isEmpty()) {
+            return 0;
+        }
+
+        $average = $reviews->avg('rating');
+
+        // Round the average rating to one decimal place
+        return round($average, 1);
     }
 
     public function addToFavorite($id)
@@ -154,7 +162,7 @@ class Products extends Component
                 'product_id' => $this->product->id,
                 'size' => $randomSize,
                 'color' => $randomColor,
-                'quantity' => $this->quantity, 
+                'quantity' => $this->quantity,
             ]);
 
             $inventoryCheck->update([

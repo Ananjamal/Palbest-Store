@@ -6,10 +6,10 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Contact extends Model
+class Contacts extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id','name', 'email', 'phone',  'message'];
+    protected $fillable = ['user_id','name', 'email',  'message'];
 
     public function user()
     {

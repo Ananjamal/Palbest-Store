@@ -49,7 +49,7 @@
 
                                     <!-- Display sizes -->
                                     <td class="text-center">
-                                        <div class="d-flex justify-content-center flex-wrap">
+                                        <div class="flex-wrap d-flex justify-content-center">
                                             @foreach (json_decode($product->size, true) as $size)
                                                 <span class="badge bg-primary me-1">{{ $size }}</span>
                                             @endforeach
@@ -58,7 +58,7 @@
 
                                     <!-- Display colors -->
                                     <td class="text-center">
-                                        <div class="d-flex justify-content-center flex-wrap">
+                                        <div class="flex-wrap d-flex justify-content-center">
                                             @foreach (json_decode($product->color, true) as $color)
                                                 <span class="badge" style="background-color: {{ $color }}; color: white;" class="me-1">{{ ucfirst($color) }}</span>
                                             @endforeach
@@ -73,6 +73,8 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $products->links() }}
+
                 </div>
             </div>
         </div>

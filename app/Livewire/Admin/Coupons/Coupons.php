@@ -5,9 +5,13 @@ namespace App\Livewire\Admin\Coupons;
 use App\Models\Coupon;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class Coupons extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $counter;
     public $coupon_id;
     #[On('successflash')]
@@ -36,7 +40,7 @@ class Coupons extends Component
 
     public function render()
     {
-        $coupons = Coupon::latest()->get();
+        $coupons = Coupon::latest()->paginate(10);
         return view('livewire.admin.coupons.coupons', [
             'coupons' => $coupons,
         ])->layout('layout.admin.app');

@@ -54,15 +54,15 @@
                                         <td class="text-center align-middle">{{ $item->product->category->name }}</td>
                                         <td class="text-center align-middle">
                                             <img src="{{ Storage::url($item->product->image) }}"
-                                                class="img-fluid rounded-circle border" alt="Product Image"
+                                                class="border img-fluid rounded-circle" alt="Product Image"
                                                 style="width: 90px; height: 90px; object-fit: cover;">
                                         </td>
                                         <td class="text-center align-middle">
                                             @if ($item->stock <= 0)
-                                            <span class="badge bg-danger text-white py-1 px-3"
+                                            <span class="px-3 py-1 text-white badge bg-danger"
                                                     style="font-size: 1.1rem;">Out Of Stock</span>
                                             @else
-                                                <span class="badge bg-success text-white py-1 px-3"
+                                                <span class="px-3 py-1 text-white badge bg-success"
                                                     style="font-size: 1.1rem;">{{ $item->stock }} In Stock</span>
                                             @endif
                                         </td>
@@ -79,6 +79,8 @@
                             </tbody>
 
                         </table>
+                        {{ $inventory->links() }}
+
                     </div>
 
 

@@ -93,6 +93,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $orders->links() }}
+
                     @endif
                 </div>
             </div>
@@ -103,7 +105,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="text-white modal-header bg-primary">
                     <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
                     <button type="button" wire:click='refresh' class="btn-close btn-close-white"
                         data-bs-dismiss="modal" aria-label="Close"></button>
@@ -112,7 +114,7 @@
                 @if ($order_id)
                     @livewire('admin.orders.order-details', [$order_id])
                 @else
-                    <p class="text-muted text-center">No order details available.</p>
+                    <p class="text-center text-muted">No order details available.</p>
                 @endif
 
             </div>
@@ -124,7 +126,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+                <div class="text-white modal-header bg-success">
                     <h5 class="modal-title" id="completeOrderModalLabel">Confirm Completion</h5>
                     <button type="button" wire:click='refresh' class="btn-close btn-close-white"
                         data-bs-dismiss="modal" aria-label="Close"></button>

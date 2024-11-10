@@ -6,9 +6,13 @@ use App\Models\Product;
 use Livewire\Component;
 use App\Models\Inventory;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class Inventories extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $product_id;
     public $searchTerm;
 
@@ -42,7 +46,7 @@ class Inventories extends Component
     }
     public function render()
     {
-        $inventory = Inventory::where('product_id', 'like', '%' . $this->searchTerm . '%')->get();
+        $inventory = Inventory::where('product_id', 'like', '%' . $this->searchTerm . '%')->paginate(10);
         return view('livewire.admin.inventory.inventories', [
             'inventory' => $inventory,
         ])->layout('layout.admin.app');

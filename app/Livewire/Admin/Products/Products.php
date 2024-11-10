@@ -5,9 +5,13 @@ namespace App\Livewire\Admin\Products;
 use App\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class Products extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
     public $category_id;
     public $product_id;
     public $searchTerm;
@@ -44,7 +48,7 @@ class Products extends Component
     }
     public function render()
     {
-        $products = Product::where('name', 'like', '%' . $this->searchTerm . '%')->get();
+        $products = Product::where('name', 'like', '%' . $this->searchTerm . '%')->paginate(10);
         return view('livewire.admin.products.products', [
             'products' => $products,
         ])->layout('layout.admin.app');

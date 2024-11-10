@@ -5,9 +5,13 @@ namespace App\Livewire\Admin\Categories;
 use Livewire\Component;
 use App\Models\Category;
 use Livewire\Attributes\On;
+use Livewire\WithPagination;
 
 class Categories extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
 
     public $category_id;
 
@@ -44,7 +48,7 @@ class Categories extends Component
     }
     public function render()
     {
-        $categories = Category::where('name', 'like', '%' . $this->searchTerm . '%')->get();
+        $categories = Category::where('name', 'like', '%' . $this->searchTerm . '%')->paginate(10);
         return view('livewire.admin.categories.categories', [
             'categories' => $categories,
         ])->layout('layout.admin.app');

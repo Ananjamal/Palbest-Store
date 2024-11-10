@@ -44,6 +44,8 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $contacts->links() }}
+
                     @endif
                 </div>
             </div>

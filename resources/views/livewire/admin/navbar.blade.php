@@ -55,11 +55,17 @@
                 
                     {{-- Loop through contacts and display messages --}}
                     @foreach ($contacts as $contact)
-                        <a href="{{route()}}"  class="py-3 dropdown-item preview-item d-flex align-items-center">
+                        <a href="{{route('admin.messages')}}"  class="py-3 dropdown-item preview-item d-flex align-items-center">
                             <div class="preview-thumbnail me-3">
                                 {{-- Use the user's profile picture, or a default image if not available --}}
-                                <img src="{{ asset($contact->user->image ?? 'assets/admin/images/faces/default.jpg') }}" 
+                               @if (!$contact->user->image)
+                               <img src="{{ asset('assets/admin/images/face.png') }}" 
                                     alt="image" class="profile-pic rounded-circle">
+                               @else
+                               <img src="{{ asset(Storage::url($contact->user->image) ) }}" 
+                                    alt="image" class="profile-pic rounded-circle">
+                               @endif
+                                
                             </div>
                             <div class="preview-item-content d-flex flex-column">
                                 <h6 class="mb-1 preview-subject font-weight-semibold text-dark">{{ $contact->name }} sent you a message</h6>
@@ -74,7 +80,7 @@
                 </div>
                 
             </li>
-            <li class="nav-item dropdown">
+            {{-- <li class="nav-item dropdown">
                 <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
                     data-bs-toggle="dropdown">
                     <i class="mdi mdi-bell-outline"></i>
@@ -122,7 +128,7 @@
                     <div class="dropdown-divider"></div>
                     <h6 class="p-3 mb-0 text-center">See all notifications</h6>
                 </div>
-            </li>
+            </li> --}}
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
                     aria-expanded="false">

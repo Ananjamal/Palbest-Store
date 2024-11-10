@@ -13,6 +13,10 @@ class CompleteOrder extends Component
     {
         $this->order = Order::findOrFail($id);
     }
+    public function refresh()
+    {
+        $this->dispatch('refreshPage');
+    }
 
     public function completeOrder()
     {

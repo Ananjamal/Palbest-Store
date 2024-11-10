@@ -80,7 +80,7 @@
 
                             @if (count($cartItems) === 0)
                                 <div class="mt-4 text-center alert alert-info">
-                                    Your wishlist is empty.
+                                    Your cart is empty.
                                 </div>
                             @endif
                         </div>

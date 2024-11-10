@@ -14,6 +14,7 @@
             </div>
         </div>
     </section>
+    
     <!-- Shop Section Begin -->
     <section class="shop spad">
         <div class="container">
@@ -41,9 +42,10 @@
                                                     <li>
                                                         <a href="#"
                                                             wire:click.prevent="setCategory({{ $category->id }})">
-                                                            {{ $category->name }} ({{ $category->products_count }})
+                                                            {{ $category->name }}
                                                         </a>
                                                     </li>
+                                                    {{-- ({{ $category->products_count }}) --}}
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -97,10 +99,12 @@
                                     <div class="card-heading custom-card-heading">Colors</div>
 
                                     <div class="card-body custom-card-body" style="padding: 20px;">
-                                        <div class="shop__sidebar__colors" style="display: flex; flex-wrap: wrap;margin-left:20px">
+                                        <div class="shop__sidebar__colors" style="display: flex; flex-wrap: wrap; margin-left: 20px;">
                                             @foreach ($colors as $color)
                                                 <label class="custom-label"
-                                                    style="display: inline-flex; align-items: center; justify-content: center; margin-right:5px; margin-bottom: 10px; padding: 10px; border-radius: 100px; cursor: pointer; transition: background-color 0.3s ease; width: 80px; height: 40px; color: white; font-size: 0.9rem; background-color: {{ $color }};">
+                                                    style="display: inline-flex; align-items: center; justify-content: center; margin-right: 5px; margin-bottom: 10px; padding: 10px; border-radius: 100px; cursor: pointer; transition: background-color 0.3s ease; width: 80px; height: 40px; color: white; font-size: 0.9rem; background-color: {{ $color }};"
+                                                    onmouseover="this.style.filter = 'brightness(85%)';"
+                                                    onmouseout="this.style.filter = 'brightness(100%)';">
                                                     <input type="radio" wire:model="selectedColor"
                                                         value="{{ $color }}"
                                                         wire:click="selectColor('{{ $color }}')"
@@ -111,6 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -119,7 +124,7 @@
 
                     <div class="row">
                         @if ($products->isEmpty())
-                            <div style="text-align: center; padding: 20px; color: #555;">
+                            <div style="text-align: center;margin-top:150px; padding: 20px; color: #555;">
                                 <h3>No Products Found</h3>
                             </div>
                         @else
@@ -190,13 +195,16 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="product__pagination">
+                            {{ $products->links() }}
+
+                            {{-- <div class="product__pagination">
                                 <a class="active" href="#">1</a>
                                 <a href="#">2</a>
                                 <a href="#">3</a>
                                 <span>...</span>
                                 <a href="#">21</a>
-                            </div>
+
+                            </div> --}}
                         </div>
                     </div>
                 </div>

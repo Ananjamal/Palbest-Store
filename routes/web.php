@@ -8,8 +8,6 @@ use App\Http\Controllers\Auth\GoogleController;
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-
-
 // Route::get('/', function () {
 //     return view('welcome');
 // })->name('/');
@@ -31,6 +29,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('admin/inventory', App\Livewire\Admin\Inventory\Inventories::class)->name('inventory');
     Route::get('admin/coupon', App\Livewire\Admin\Coupons\Coupons::class)->name('coupons');
     Route::get('admin/orders', App\Livewire\Admin\Orders\Orders::class)->name('admin.orders');
+    Route::get('admin/messages', App\Livewire\Admin\Messages\Messages::class)->name('admin.messages');
 });
 
 Route::get('/', App\Livewire\Website\Main::class)->name('/');
@@ -52,4 +51,5 @@ Route::get('orders', App\Livewire\Website\Orders\Orders::class)
     ->middleware('auth');
 
 
+require __DIR__ . '/auth.php';
 require __DIR__ . '/auth.php';

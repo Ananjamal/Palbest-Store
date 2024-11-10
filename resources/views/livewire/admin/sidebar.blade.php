@@ -8,7 +8,7 @@
                     <span class="login-status online"></span>
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                    <span class="font-weight-bold mb-2">{{$user->name}}</span>
+                    <span class="mb-2 font-weight-bold">{{$user->name}}</span>
                     <span class="text-secondary text-small">Project Manager</span>
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
@@ -57,6 +57,12 @@
             <a class="nav-link" href="{{ route('admin.orders') }}">
                 <span class="menu-title">Orders</span>
                 <i class="fa-solid fa-truck menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.messages') }}">
+                <span class="menu-title">Messages</span>
+                <i class="fa-regular fa-envelope menu-icon"></i>
             </a>
         </li>
         {{-- <!-- Basic UI Elements -->

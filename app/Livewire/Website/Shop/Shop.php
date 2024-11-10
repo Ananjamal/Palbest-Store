@@ -10,17 +10,21 @@ use App\Models\Favorite;
 use App\Models\Inventory;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class Shop extends Component
 {
-    public $products;
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+
     public $user_id;
     public $product;
     public $quantity = 1;
     public $searchTerm = '';
     public $selectedCategory;
-    public $selectedSize;  // Store single size
-    public $selectedColor; // Store single color
+    public $selectedSize;
+    public $selectedColor;
     public $selectedPriceRange;
     public $categories = [];
     public $sizes = ['S', 'M', 'XL', 'L'];
@@ -30,38 +34,29 @@ class Shop extends Component
     {
         $this->user_id = Auth::id();
         $this->categories = Category::withCount('products')->get();
-        $this->loadProducts();
     }
 
     public function loadProducts()
     {
-        // Start the query
         $query = Product::with('reviews');
 
-        // Apply search term filter if present
         if ($this->searchTerm) {
             $query->where('name', 'like', '%' . $this->searchTerm . '%');
         }
 
-        // Apply category filter if present
         if ($this->selectedCategory) {
             $query->where('category_id', $this->selectedCategory);
         }
 
-        // Apply filters, ensuring only one is active at a time
         if ($this->selectedPriceRange) {
-            $this->resetFilters('price');
             $this->applyPriceRangeFilter($query);
         } elseif ($this->selectedSize) {
-            $this->resetFilters('size');
             $query->whereJsonContains('size', $this->selectedSize);
         } elseif ($this->selectedColor) {
-            $this->resetFilters('color');
             $query->whereJsonContains('color', $this->selectedColor);
         }
 
-        // Get products and add stars and favorites
-        $this->products = $query->get()->map(function ($product) {
+        return $query->paginate(9)->through(function ($product) {
             $product->stars = $this->calculateStars($product->reviews);
             $product->isFavorited = $this->checkIfInFavorite($product->id);
             return $product;
@@ -195,7 +190,6 @@ class Shop extends Component
             ]);
             $this->loadProducts();
             $this->dispatch('refreshPage');
-
         }
     }
 
@@ -277,7 +271,7 @@ class Shop extends Component
     public function render()
     {
         return view('livewire.website.shop.shop', [
-            'products' => $this->products,
+            'products' => $this->loadProducts(),
         ])->layout('layout.website.app');
     }
 }

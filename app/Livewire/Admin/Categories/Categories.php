@@ -12,15 +12,9 @@ class Categories extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
 
-
     public $category_id;
-
     public $searchTerm;
-    // protected $listeners = [
-    //     'search' => 'search',
-    //     'flash' => 'flash',
-    //     'refreshPage' => 'refresh',
-    // ];
+    
     #[On('successflash')]
     public function successflash($message)
     {

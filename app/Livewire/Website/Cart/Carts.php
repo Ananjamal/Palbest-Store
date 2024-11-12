@@ -38,14 +38,11 @@ class Carts extends Component
         $cartItem = CartItem::findOrFail($id);
         $inventoryCheck = Inventory::where('product_id', $cartItem->product_id)->first();
 
-        // Check if there is enough stock available
         if ($inventoryCheck->stock !== 0) {
-            // Increase cart item quantity and decrease inventory stock
-            $cartItem->increment('quantity'); // This increments the quantity by 1
-            $inventoryCheck->decrement('stock'); // Decrease stock by 1
-            $this->mount(); // Refresh the cart data
+            $cartItem->increment('quantity'); 
+            $inventoryCheck->decrement('stock'); 
+            $this->mount(); 
         } else {
-            // Notify user if not enough stock
             $this->dispatch('swal:alert', [
                 'title' => 'Error!',
                 'text' => 'Not enough stock available.',
@@ -110,9 +107,8 @@ class Carts extends Component
                 'text' => 'Coupon applied successfully.',
                 'icon' => 'success',
             ]);
-            $this->mount(); // Ensure total price is recalculated after discount
+            $this->mount(); 
         } else {
-            // Optionally, you can dispatch an alert for an invalid coupon
             $this->discount_amount = 0;
             $this->discountPercentage = 0;
             $this->dispatch('swal:alert', [

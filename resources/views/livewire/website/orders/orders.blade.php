@@ -8,7 +8,6 @@
                         <h4>My Orders</h4>
                         <div class="breadcrumb__links">
                             <a href="{{ route('/') }}">Home</a>
-                            <a href="{{ route('shop') }}">Shop</a>
                             <span>My Orders</span>
                         </div>
                     </div>

@@ -35,7 +35,7 @@ class Checkout extends Component
     public $payment_method;
     public $paid = false;
     public $method_check;
-    public $token; // Token set from the frontend
+    public $token; 
     public $order_id;
     public $payment_type;
     public $username;
@@ -70,7 +70,7 @@ class Checkout extends Component
             $this->state = $formData['state'];
             $this->country = $formData['country'];
             $this->zip_code = $formData['zip_code'];
-            $this->isSaved = true; // Enable payment methods if data already exists in the session
+            $this->isSaved = true; 
         }
 
         if (session()->has('checkout_data')) {
@@ -84,10 +84,7 @@ class Checkout extends Component
     }
     public function saveCheckoutData()
     {
-        // Validate fields before saving to session
         $this->validate();
-
-        // Save data to session
         session([
             'checkout_form_data' => [
                 'first_name' => $this->first_name,
@@ -101,7 +98,7 @@ class Checkout extends Component
                 'zip_code' => $this->zip_code,
             ],
         ]);
-        $this->isSaved = true; // Set to true to enable payment section
+        $this->isSaved = true; 
 
         session()->flash('message', 'Checkout information saved successfully!');
     }
@@ -181,7 +178,7 @@ class Checkout extends Component
 
     public function setPaymentMethod()
     {
-        $this->method_check = $this->payment_method; // Assigning payment_method to method_check
+        $this->method_check = $this->payment_method; 
     }
 
     public function processPayment()
@@ -189,17 +186,11 @@ class Checkout extends Component
         Stripe::setApiKey(env('STRIPE_SECRET'));
 
         try {
-            // Retrieve existing charges to check if a similar charge exists
             $existingCharges = Charge::all([
-                'limit' => 100, // Adjust the limit as needed
+                'limit' => 100,
                 'currency' => 'usd',
             ]);
-
-            // Get the order ID
-            // Get last 4 digits of the card number from the token (or previously stored)
             $cardLast4 = $this->getLast4Digits($this->token);
-
-            // Check if a charge with the same amount, description, and card last 4 digits exists
             foreach ($existingCharges->data as $existingCharge) {
                 if ($existingCharge->amount === $this->totalPrice * 100 && ($existingCharge->description === 'Payment for order #' . $existingCharge->payment_method_details->card->last4) === $cardLast4) {
                     $this->dispatch('swal:alert', [
@@ -207,22 +198,18 @@ class Checkout extends Component
                         'text' => 'A similar charge already exists for this card.',
                         'icon' => 'info',
                     ]);
-                    return; // Exit if the charge already exists
+                    return; 
                 }
             }
-
-            // Create a Charge using the token securely sent from the frontend
             $charge = Charge::create([
-                'amount' => $this->totalPrice * 100, // Convert dollars to cents
+                'amount' => $this->totalPrice * 100, 
                 'currency' => 'usd',
                 'source' => $this->token,
-                'description' => 'Payment for username: ' . $this->username, // Use $order_id here
+                'description' => 'Payment for username: ' . $this->username,
             ]);
-
             if ($charge->status === 'succeeded') {
-                session(['payment_status' => true]); // Store payment status in session
-
-                session(['payment_type' => $this->payment_method]); // Store payment status in session
+                session(['payment_status' => true]);
+                session(['payment_type' => $this->payment_method]); 
 
                 $this->dispatch('swal:alert', [
                     'title' => 'Success!',
@@ -242,10 +229,8 @@ class Checkout extends Component
             ]);
         }
     }
-    // Helper function to retrieve last 4 digits of the card
     protected function getLast4Digits($token)
     {
-        // Use the Stripe API or saved card data to get last 4 digits
         $cardDetails = \Stripe\Token::retrieve($token);
         return $cardDetails->card->last4;
     }

@@ -42,9 +42,9 @@ class Edit extends Component
         $this->productName = $this->product->name;
         $this->productDescription = $this->product->description;
         $this->productPrice = $this->product->price;
-        $this->productSize = json_decode($this->product->size, true); // Assuming sizes are stored as JSON
-        $this->productColor = json_decode($this->product->color, true); // Assuming colors are stored as JSON
-        $this->currentImage = $this->product->image; // Store current image path for display
+        $this->productSize = json_decode($this->product->size, true); 
+        $this->productColor = json_decode($this->product->color, true);
+        $this->currentImage = $this->product->image;
     }
 
     public function updated($propertyName)
@@ -69,10 +69,8 @@ class Edit extends Component
         }
         $this->product->update($data);
 
-        // Reset input fields
         $this->reset(['productName', 'category_id', 'productDescription', 'productPrice', 'productSize', 'productColor', 'newImage']);
 
-        // Dispatch events to show success message and close the modal
         $message = 'Product successfully updated.';
         $this->dispatch('successflash', $message);
         $this->dispatch('refreshPage');

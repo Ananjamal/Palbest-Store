@@ -151,7 +151,6 @@ class Shop extends Component
 
         $average = $reviews->avg('rating');
 
-        // Round the average rating to one decimal place
         return round($average, 1);
     }
 
@@ -203,7 +202,6 @@ class Shop extends Component
             ]);
             return;
         }
-
         $this->product = Product::findOrFail($id);
         $inventoryCheck = Inventory::where('product_id', $this->product->id)->first();
         if ($inventoryCheck->stock == 0) {
@@ -222,17 +220,11 @@ class Shop extends Component
             ]);
             return;
         }
-
-        // Create or retrieve the user's cart
         $cart = Cart::firstOrCreate(['user_id' => $this->user_id]);
-
-        // Decode the size and color arrays, then select a random option from each
         $sizes = json_decode($this->product->size, true);
         $colors = json_decode($this->product->color, true);
         $randomSize = $sizes[array_rand($sizes)];
         $randomColor = $colors[array_rand($colors)];
-
-        // Check if the item already exists in the cart
         $existingItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $this->product->id)
             ->first();
@@ -244,7 +236,6 @@ class Shop extends Component
                 'icon' => 'info',
             ]);
         } else {
-            // Add the item to the cart with the random size and color
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $this->product->id,

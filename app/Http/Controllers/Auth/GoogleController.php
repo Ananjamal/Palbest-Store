@@ -23,21 +23,17 @@ class GoogleController extends Controller
             return redirect('/login')->with('error', 'Unable to login using Google. Please try again.');
         }
 
-        // Find or create a user in the database
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if (!$user) {
-            // Create a new user if not found
             $user = User::create([
                 'name' => $googleUser->getName(),
                 'email' => $googleUser->getEmail(),
-                'password' => bcrypt(uniqid()), // Use a random password for Google login
+                'password' => bcrypt(uniqid()),
             ]);
         }
-
-        // Log the user in
         Auth::login($user, true);
 
-        return redirect()->intended('/'); // Redirect to your intended route after login
+        return redirect()->intended('/'); 
     }
 }

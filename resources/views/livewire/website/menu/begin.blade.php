@@ -27,19 +27,20 @@
 
         <!-- Offcanvas Navigation Icons (Cart, Heart, etc.) -->
         <div class="mb-4 offcanvas__nav__option d-flex justify-content-around">
-            <a href="#" class="icon-link">
+            <a href="#" class="icon-link " data-bs-toggle="modal" data-bs-target="#searchModal">
                 <i class="fa fa-search"></i>
             </a>
-
-            <!-- Favorites Icon -->
             <a href="{{ route('favorites') }}" class="icon-link">
                 <i class="fa fa-heart"></i>
+                @auth
+                    <span class="badge">{{ $favoriteCount }}</span>
+                @endauth
             </a>
-
-            <!-- Cart Icon -->
             <a href="{{ route('cart') }}" class="icon-link cart-icon">
                 <i class="fa fa-shopping-cart"></i>
-                <span class="cart-count">{{ $cartCount }}</span>
+                @auth
+                    <span class="badge">{{ $cartCount }}</span>
+                @endauth
             </a>
 
         </div>

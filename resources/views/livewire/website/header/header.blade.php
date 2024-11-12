@@ -3,12 +3,12 @@
         <div class="container">
             <div class="header__content">
                 <!-- Logo -->
-                <div class="header__logo">
+                <div class="header__logo  ">
                     <a href="{{ route('/') }}"><img src="{{ asset('assets/website/img/logo.png') }}" alt="Logo"></a>
                 </div>
 
                 <!-- Navigation Menu -->
-                <nav class="header__menu">
+                <nav class="header__menu mobile-menu">
                     <ul>
                         <li><a href="{{ route('/') }}">Home</a></li>
                         <li><a href="{{ route('shop') }}">Shop</a></li>
@@ -18,7 +18,7 @@
                 </nav>
 
                 <!-- User Actions -->
-                <div class="header__actions">
+                <div class="header__actions header__nav__option">
                     <a href="#" class="icon-link " data-bs-toggle="modal" data-bs-target="#searchModal">
                         <i class="fa fa-search"></i>
                     </a>
@@ -55,9 +55,11 @@
                 </div>
 
                 <!-- Mobile Menu Icon -->
-                <div class="canvas__open d-lg-none">
+                {{-- <div class="canvas__open d-lg-none">
                     <i class="fa fa-bars"></i>
-                </div>
+                </div> --}}
+                <div class="canvas__open"><i class="fa fa-bars"></i></div>
+
             </div>
         </div>
         <div wire:ignore.self class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">

@@ -28,8 +28,10 @@
                         <div class="col-lg-3 col-md-6 col-sm-6 mix best-sellers fade-in">
                             <div class="product__item">
                                 <div class="product__item__pic">
-                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="img-fluid">
-                                    {{-- Out of Stock Label --}}
+                                    
+                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" 
+                                    style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                                                                  {{-- Out of Stock Label --}}
                                     @if ($item->inventory->stock == 0)
                                         <span class="label">Out of Stock</span>
                                     @elseif ($hotSales->contains($item))
@@ -84,8 +86,9 @@
                         <div class="col-lg-3 col-md-6 col-sm-6 mix new-arrivals fade-in">
                             <div class="product__item">
                                 <div class="product__item__pic">
-                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="img-fluid">
-                                    {{-- Out of Stock Label --}}
+                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" 
+                                    style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                                                                              {{-- Out of Stock Label --}}
                                     @if ($item->inventory->stock == 0)
                                         <span class="label">Out of Stock</span>
                                     @else
@@ -138,8 +141,9 @@
                         <div class="col-lg-3 col-md-6 col-sm-6 mix hot-sales fade-in">
                             <div class="product__item">
                                 <div class="product__item__pic">
-                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" class="img-fluid">
-                                    {{-- Out of Stock Label --}}
+                                    <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" 
+                                    style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                                                                              {{-- Out of Stock Label --}}
                                     @if ($item->inventory->stock == 0)
                                         <span class="label">Out of Stock</span>
                                     @else

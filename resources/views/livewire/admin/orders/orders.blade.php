@@ -28,8 +28,8 @@
                     <!-- No Orders Message -->
                     @if ($orders->isEmpty())
                         <div class="mt-4 text-center alert alert-info">
-                            There are no orders yet. <a href="{{ route('shop') }}" class="text-primary">Continue
-                                shopping</a>
+                            There are no orders yet. 
+                               
                         </div>
                     @else
                         <!-- Orders Table -->

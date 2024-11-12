@@ -36,8 +36,8 @@
                                 <div class="card custom-card">
                                     <div class="card-heading custom-card-heading">Categories</div>
                                     <div class="card-body custom-card-body">
-                                        <div class="shop__sidebar__categories">
-                                            <ul class="nice-scroll">
+                                        <div class="shop__sidebar__price">
+                                            <ul >
                                                 @foreach ($categories as $category)
                                                     <li>
                                                         <a href="#"
@@ -132,8 +132,9 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6">
                                     <div class="product__item">
                                         <div class="product__item__pic">
-                                            <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}"
-                                                class="img-fluid">
+                                            <img src="{{ Storage::url($item->image) }}" alt="{{ $item->name }}" 
+                                            style="width: 100%; height: 260px; object-fit: cover; border-radius: 8px;">
+                                      
                                             @if ($item->inventory->stock == 0)
                                                 <span class="label">out of stock</span>
                                             @endif

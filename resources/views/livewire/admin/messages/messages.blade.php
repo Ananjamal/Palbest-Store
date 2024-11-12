@@ -11,7 +11,7 @@
                     {{-- Table or No Message Notification --}}
                     @if ($contacts->isEmpty())
                         <div class="mt-4 text-center alert alert-info">
-                            There are no contact messages. <a href="{{ route('home') }}" class="text-primary">Return to Home</a>
+                            There are no contact messages.
                         </div>
                     @else
                         <table class="table align-middle table-hover table-striped custom-table">

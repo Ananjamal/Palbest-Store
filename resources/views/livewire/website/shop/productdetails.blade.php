@@ -19,8 +19,9 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                     <div class="product__details__pic__item">
-                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}">
-                                    </div>
+                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" 
+                                        style="width: 300px; height: 400px;  border-radius: 8px;">
+                                                                                  </div>
                                 </div>
 
                             </div>
